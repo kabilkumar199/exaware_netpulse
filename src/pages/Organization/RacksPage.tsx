@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
-import RackFormModal from "./Rack/RackFormModal";
-import RegionsActions from "./regions/RegionsActions";
-import RegionsToolbar from "./regions/RegionsToolbar";
+import RackFormModal from "../../components/modals/RackFormModal";
 import { mockRacks } from "../../data/mockData";
 
 export interface Rack {
@@ -76,7 +74,6 @@ const RacksPage: React.FC = () => {
           <Plus size={16} /> Add Rack
         </button>
       </div>
-      <RegionsToolbar />
 
       <div className="bg-slate-800 rounded-xl overflow-hidden">
         <table className="w-full text-sm text-left">
@@ -119,7 +116,6 @@ const RacksPage: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <RegionsActions />
 
       {showModal && (
         <RackFormModal

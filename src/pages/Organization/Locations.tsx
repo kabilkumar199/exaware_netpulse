@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
-import LocationFormModal from "./Location/LocationFormModal";
-import RegionsToolbar from "./regions/RegionsToolbar";
+import LocationFormModal from "../../components/modals/LocationFormModal";
 import { mockLocations } from "../../data/mockData";
 import type { Location } from "../../types";
-import RegionsActions from "./regions/RegionsActions";
 
 const Locations: React.FC = () => {
   const [locations, setLocations] = useState<Location[]>(mockLocations);
@@ -50,8 +48,6 @@ const Locations: React.FC = () => {
           <Plus size={16} /> Add Location
         </button>
       </div>
-
-      <RegionsToolbar />
 
       {/* Table */}
       <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700">
@@ -117,7 +113,6 @@ const Locations: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <RegionsActions />
 
       {/* Modal */}
       {showModal && (

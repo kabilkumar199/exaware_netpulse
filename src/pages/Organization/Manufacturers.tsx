@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
-import ManufacturersActions from "./Manufacturers/ManufacturersActions";
-import ManufacturersToolbar from "./Manufacturers/ManufacturersToolbar";
+import ManufacturersActions from "../../components/forms/ManufacturersActions";
+import ManufacturersToolbar from "../../components/shared/ManufacturersToolbar";
 import ManufacturersFormModal, {
   type ManufacturerData,
-} from "./Manufacturers/ManufacturersFormModal";
-import RegionsActions from "./regions/RegionsActions";
+} from "../../components/modals/ManufacturersFormModal";
 import { mockManufacturers } from "../../data/mockData";
 
 const ManufacturersPage: React.FC = () => {
@@ -121,7 +120,6 @@ const ManufacturersPage: React.FC = () => {
         onDelete={() => console.log("Bulk delete")}
         onView={() => console.log("View selected")}
       /> */}
-     <RegionsActions />
 
       {/* Modal */}
       <ManufacturersFormModal
