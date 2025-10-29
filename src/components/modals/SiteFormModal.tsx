@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RefreshCw } from "lucide-react";
-import type { Site } from "../../../types";
-import { mockLocations } from "../../../data/mockData";
+import type { Site } from "../../types";
+import { mockLocations } from "../../data/mockData";
 
 interface Props {
   site?: Site | null;

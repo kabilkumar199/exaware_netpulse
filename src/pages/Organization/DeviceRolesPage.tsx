@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
-  import DeviceRolesToolbar from "./DeviceRolesToolbar";
-import DeviceRolesActions from "./DeviceRolesActions";
-import DeviceRoleFormModal, { type DeviceRoleData } from "./DeviceRoleFormModal";
-import RegionsActions from "./regions/RegionsActions";
+import DeviceRolesToolbar from "../../components/shared/DeviceRolesToolbar";
+import DeviceRoleFormModal, { type DeviceRoleData } from "../../components/modals/DeviceRoleFormModal";
 import { mockDeviceRoles } from "../../data/mockData";
 import type { DeviceRole } from "../../types";
 
@@ -84,7 +82,8 @@ const DeviceRolesPage: React.FC = () => {
               <th className="px-4 py-2">Slug</th>
               <th className="px-4 py-2">Color</th>
               <th className="px-4 py-2">Description</th>
-             </tr>
+              <th className="px-4 py-2">Actions</th>
+            </tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
@@ -111,16 +110,30 @@ const DeviceRolesPage: React.FC = () => {
                     />
                   </td>
                   <td className="px-4 py-3 text-gray-300">{r.description}</td>
-                   
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleEdit(r)}
+                        className="p-1 text-blue-400 hover:text-blue-300 transition-colors"
+                        title="Edit role"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(r.id)}
+                        className="p-1 text-red-400 hover:text-red-300 transition-colors"
+                        title="Delete role"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
-      <RegionsActions />
-
-      {/* <DeviceRolesActions /> */}
 
       {/* Modal */}
       <DeviceRoleFormModal

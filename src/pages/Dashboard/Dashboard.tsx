@@ -1,9 +1,9 @@
 import React from 'react';
 import { Search, AlertTriangle, Clock } from 'lucide-react';
-import StatsCard from './StatsCard';
-import DeviceStatusChart from './DeviceStatusChart';
-import RecentEvents from './RecentEvents';
-import QuickActions from './QuickActions';
+import StatsCard from '../../components/charts/StatsCard';
+import DeviceStatusChart from '../../components/charts/DeviceStatusChart';
+import RecentEvents from '../../components/shared/RecentEvents';
+import QuickActions from '../../components/shared/QuickActions';
 import { mockDevices, mockEvents } from '../../data/mockData';
 import { Monitor, CheckCircle, Building2, Link2 } from 'lucide-react';
 

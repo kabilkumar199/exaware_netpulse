@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
-import SiteFormModal from "./Site/SiteFormModal";
-import RegionsToolbar from "./regions/RegionsToolbar";
-import RegionsActions from "./regions/RegionsActions";
+import SiteFormModal from "../../components/modals/SiteFormModal";
 import { mockSites } from "../../data/mockData";
 import type { Site } from "../../types";
 
@@ -51,7 +49,6 @@ const Sites: React.FC = () => {
       </div>
 
       {/* Toolbar */}
-      <RegionsToolbar />
 
       {/* Table */}
       <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700">
@@ -109,7 +106,6 @@ const Sites: React.FC = () => {
       </div>
 
       {/* Footer Actions */}
-      <RegionsActions />
 
       {/* Modal */}
       {showModal && (

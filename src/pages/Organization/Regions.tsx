@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Plus, Upload, Download } from "lucide-react";
-import RegionsToolbar from "./regions/RegionsToolbar";
-import RegionsTable from "./regions/RegionsTable";
-import RegionsActions from "./regions/RegionsActions";
-import AddRegion from "./regions/AddRegion"; // Make sure path is correct
+import RegionsToolbar from "../../components/shared/RegionsToolbar";
+import RegionsTable from "../../components/tables/RegionsTable";
+import RegionsActions from "../../components/shared/RegionsActions";
+import AddRegion from "../../components/forms/AddRegion";
 import { mockRegions } from "../../data/mockData";
 
 export interface Region {

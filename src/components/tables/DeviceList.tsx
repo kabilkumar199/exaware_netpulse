@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
 import type { Device } from '../../types';
 import { mockDevices } from '../../data/mockData';
-
+import AddDeviceModal from '../modals/AddDeviceModal';
+ 
 interface DeviceListProps {
   onDeviceSelect: (device: Device) => void;
   onConfigureL2Services?: (device: Device) => void;
@@ -17,6 +19,7 @@ const DeviceList: React.FC<DeviceListProps> = ({ onDeviceSelect, onConfigureL2Se
   });
   const [sortBy, setSortBy] = useState<'name' | 'status' | 'vendor' | 'lastSeen'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [showAddDeviceModal, setShowAddDeviceModal] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -178,7 +181,14 @@ const DeviceList: React.FC<DeviceListProps> = ({ onDeviceSelect, onConfigureL2Se
               Devices ({sortedDevices.length})
             </h3>
             <div className="flex space-x-2">
-              <button className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <button 
+                onClick={() => setShowAddDeviceModal(true)}
+                className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Device</span>
+              </button>
+              <button className="px-3 py-2 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700">
                 Export
               </button>
               <button className="px-3 py-2 text-sm border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700">
@@ -320,6 +330,12 @@ const DeviceList: React.FC<DeviceListProps> = ({ onDeviceSelect, onConfigureL2Se
           </div>
         )}
       </div>
+
+      {/* Add Device Modal */}
+      <AddDeviceModal 
+        isOpen={showAddDeviceModal}
+        onClose={() => setShowAddDeviceModal(false)}
+      />
     </div>
   );
 };
