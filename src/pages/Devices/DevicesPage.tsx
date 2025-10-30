@@ -1,38 +1,35 @@
-import React, { useState } from 'react';
-import type { Device } from '../../types';
-import DeviceList from '../../components/tables/DeviceList';
-import DeviceDetails from '../../components/modals/DeviceDetails';
+import React, { useEffect, useState } from "react";
+import type { Device } from "../../types";
+import DeviceList from "../../components/tables/DeviceList";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchDevices } from "../../store/slices/devicesSlice";
+import type { AppDispatch } from "../../store/store";
 
 const DevicesPage: React.FC = () => {
-  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
-  const [showDeviceDetails, setShowDeviceDetails] = useState(false);
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const handleDeviceSelect = (device: Device) => {
-    setSelectedDevice(device);
-    setShowDeviceDetails(true);
+    navigate(`/devices/${device.id}`);
   };
+
+  useEffect(() => {
+    dispatch(fetchDevices());
+  }, []);
 
   const handleConfigureL2Services = (device: Device) => {
     // Navigate to L2 services configuration
-    console.log('Configure L2 Services for:', device.hostname);
+    console.log("Configure L2 Services for:", device.hostname);
   };
 
   return (
     <>
-      <DeviceList 
-        onDeviceSelect={handleDeviceSelect} 
-        onConfigureL2Services={handleConfigureL2Services} 
+      <DeviceList
+        onDeviceSelect={handleDeviceSelect}
+        onConfigureL2Services={handleConfigureL2Services}
       />
-      
-      {showDeviceDetails && selectedDevice && (
-        <DeviceDetails
-          device={selectedDevice}
-          onClose={() => {
-            setShowDeviceDetails(false);
-            setSelectedDevice(null);
-          }}
-        />
-      )}
+
+      {/* Device details are now a dedicated page at /devices/:id */}
     </>
   );
 };
