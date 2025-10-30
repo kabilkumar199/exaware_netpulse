@@ -68,7 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         isOpen ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0 lg:relative lg:inset-auto`}
     >
-      <div className="flex items-center justify-between h-16 px-4 border-b border-gray-700">
+      <div className="flex items-center justify-between h-16 px-4   border-gray-700">
         <div className="flex items-center space-x-3">
           <Logo width={120} height={16} className="text-white" />
         </div>

@@ -1,74 +1,117 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Device, Filters } from '../../types';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+ import type { AppDispatch } from "../store";
 
-interface DevicesState {
+export const GET_DEVICES_DATA = `http://10.4.160.240:8081/device`;
+
+// Define device type based on your backend response
+export interface Device {
+  id: string;
+  hostname: string;
+  ipAddress?: string;
+  vendor?: string;
+  model?: string;
+  [key: string]: any; // fallback for additional dynamic keys
+}
+
+export interface DevicesState {
   devices: Device[];
-  selectedDevice: Device | null;
-  filters: Filters;
-  isLoading: boolean;
+  loading: boolean;
   error: string | null;
-  totalCount: number;
 }
 
 const initialState: DevicesState = {
   devices: [],
-  selectedDevice: null,
-  filters: {},
-  isLoading: false,
+  loading: false,
   error: null,
-  totalCount: 0,
 };
 
 const devicesSlice = createSlice({
-  name: 'devices',
+  name: "devices",
   initialState,
   reducers: {
-    setDevices: (state, action: PayloadAction<Device[]>) => {
+    fetchDevicesStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchDevicesSuccess: (state, action: PayloadAction<Device[]>) => {
+      state.loading = false;
       state.devices = action.payload;
-      state.totalCount = action.payload.length;
     },
-    addDevice: (state, action: PayloadAction<Device>) => {
-      state.devices.push(action.payload);
-      state.totalCount += 1;
-    },
-    updateDevice: (state, action: PayloadAction<Device>) => {
-      const index = state.devices.findIndex((d) => d.id === action.payload.id);
-      if (index !== -1) {
-        state.devices[index] = action.payload;
-      }
-    },
-    removeDevice: (state, action: PayloadAction<string>) => {
-      state.devices = state.devices.filter((d) => d.id !== action.payload);
-      state.totalCount -= 1;
-    },
-    setSelectedDevice: (state, action: PayloadAction<Device | null>) => {
-      state.selectedDevice = action.payload;
-    },
-    setFilters: (state, action: PayloadAction<Filters>) => {
-      state.filters = action.payload;
-    },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
-    setError: (state, action: PayloadAction<string | null>) => {
+    fetchDevicesFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
       state.error = action.payload;
     },
-    clearError: (state) => {
+    // Add device reducers
+    addDeviceStart: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    addDeviceSuccess: (state, action: PayloadAction<Device>) => {
+      state.loading = false;
+      // Prepend newly created device for visibility
+      state.devices = [action.payload, ...state.devices];
+    },
+    addDeviceFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    clearDevices: (state) => {
+      state.devices = [];
       state.error = null;
     },
   },
 });
 
 export const {
-  setDevices,
-  addDevice,
-  updateDevice,
-  removeDevice,
-  setSelectedDevice,
-  setFilters,
-  setLoading,
-  setError,
-  clearError,
+  fetchDevicesStart,
+  fetchDevicesSuccess,
+  fetchDevicesFailure,
+  addDeviceStart,
+  addDeviceSuccess,
+  addDeviceFailure,
+  clearDevices,
 } = devicesSlice.actions;
+
+// ✅ Async action (manual, no createAsyncThunk)
+export const fetchDevices = () => async (dispatch: AppDispatch) => {
+  dispatch(fetchDevicesStart());
+  try {
+    const token = sessionStorage.getItem("token");
+    const response = await axios.get<Device[]>(GET_DEVICES_DATA, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch(fetchDevicesSuccess(response.data));
+  } catch (error: any) {
+    dispatch(
+      fetchDevicesFailure(
+        error.response?.data?.message || "Failed to fetch devices"
+      )
+    );
+  }
+};
+
+// ✅ Create device
+export const addDevice = (payload: Partial<Device>) => async (dispatch: AppDispatch) => {
+  dispatch(addDeviceStart());
+  try {
+    const token = sessionStorage.getItem("token");
+    const response = await axios.post<Device>(GET_DEVICES_DATA, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    dispatch(addDeviceSuccess(response.data));
+  } catch (error: any) {
+    dispatch(
+      addDeviceFailure(
+        error.response?.data?.message || "Failed to add device"
+      )
+    );
+  }
+};
 
 export default devicesSlice.reducer;

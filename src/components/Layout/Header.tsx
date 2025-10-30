@@ -8,7 +8,6 @@ import {
   User,
   LogOut,
 } from "lucide-react";
-import Logo from "./Logo";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -36,10 +35,6 @@ const Header: React.FC<HeaderProps> = ({
             <span className="sr-only">Open sidebar</span>
             <Menu className="w-5 h-5" />
           </button>
-
-          <div className="hidden lg:block">
-            <Logo width={100} height={14} className="text-white" />
-          </div>
         </div>
 
         <div className="flex items-center space-x-4">

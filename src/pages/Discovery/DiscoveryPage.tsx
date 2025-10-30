@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import DiscoveryWizard from '../../components/modals/DiscoveryWizard';
-import NetBoxImporter from '../../components/modals/NetBoxImporter';
-import type { DiscoveryScan } from '../../types';
+import React, { useState } from "react";
+import DiscoveryWizard from "../../components/modals/DiscoveryWizard";
+import NetBoxImporter from "../../components/modals/NetBoxImporter";
+import type { DiscoveryScan } from "../../types";
 
 const DiscoveryPage: React.FC = () => {
   const [showDiscoveryWizard, setShowDiscoveryWizard] = useState(false);
   const [showNetBoxImporter, setShowNetBoxImporter] = useState(false);
 
   const handleDiscoveryComplete = (scan: DiscoveryScan) => {
-    console.log('Discovery completed:', scan);
     setShowDiscoveryWizard(false);
   };
 
   const handleNetBoxImportComplete = (scan: DiscoveryScan) => {
-    console.log('NetBox import completed:', scan);
     setShowNetBoxImporter(false);
   };
 
   return (
     <div className="space-y-6">
       <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">Network Discovery</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">
+          Network Discovery
+        </h2>
         <p className="text-gray-400 mb-6">
           Discover and import network devices and topology information.
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
             onClick={() => setShowDiscoveryWizard(true)}
@@ -32,10 +32,11 @@ const DiscoveryPage: React.FC = () => {
           >
             <h3 className="text-lg font-semibold mb-2">New Discovery Scan</h3>
             <p className="text-blue-100">
-              Start a new network discovery scan to find devices and connections.
+              Start a new network discovery scan to find devices and
+              connections.
             </p>
           </button>
-          
+
           <button
             onClick={() => setShowNetBoxImporter(true)}
             className="p-6 bg-green-600 hover:bg-green-700 rounded-lg text-white text-left transition-colors"
