@@ -56,7 +56,7 @@ const deviceTypes: DeviceType[] = [
 ];
 
 interface AlertManagementProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const AlertManagement: React.FC<AlertManagementProps> = ({ onClose }) => {
@@ -297,12 +297,6 @@ const AlertManagement: React.FC<AlertManagementProps> = ({ onClose }) => {
               <h1 className="text-xl font-semibold text-white">Alert Management</h1>
               <p className="text-sm text-gray-400">Monitor and manage network alarms</p>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <X className="h-6 w-6" />
-            </button>
           </div>
         </div>
 

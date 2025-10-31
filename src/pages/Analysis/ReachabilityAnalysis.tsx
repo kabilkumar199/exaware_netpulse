@@ -82,14 +82,6 @@ const ReachabilityAnalysis: React.FC<ReachabilityAnalysisProps> = ({ onClose }) 
             Test and monitor network reachability between devices
           </p>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
-        )}
       </div>
 
       {/* Analysis Form */}

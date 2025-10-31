@@ -313,11 +313,6 @@ const NetworkProtocolIngestion: React.FC<NetworkProtocolIngestionProps> = ({ onC
             Discover network topology using LLDP, CDP, IS-IS, OSPF, and BGP protocols
           </p>
         </div>
-        {onClose && (
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
-            ✕
-          </button>
-        )}
       </div>
 
       {/* Protocol Selection - Compact */}

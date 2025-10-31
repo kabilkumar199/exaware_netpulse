@@ -1,38 +1,53 @@
-import React, { useState } from 'react';
-import { User, Mail, Phone, MapPin, Calendar, Shield, Settings, Key, Bell, Globe, Camera, Edit, Save, X } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Shield,
+  Settings,
+  Key,
+  Bell,
+  Globe,
+  Camera,
+  Edit,
+  Save,
+  X,
+} from "lucide-react";
 
 interface UserProfileProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState('profile');
-  
+  const [activeTab, setActiveTab] = useState("profile");
+
   const [profile, setProfile] = useState({
-    firstName: 'John',
-    lastName: 'Carter',
-    email: 'john.carter@company.com',
-    phone: '+1 (555) 123-4567',
-    department: 'IT',
-    role: 'Super Admin',
-    location: 'San Francisco, CA',
-    bio: 'Network Administrator with 10+ years of experience in enterprise network management.',
+    firstName: "John",
+    lastName: "Carter",
+    email: "john.carter@company.com",
+    phone: "+1 (555) 123-4567",
+    department: "IT",
+    role: "Super Admin",
+    location: "San Francisco, CA",
+    bio: "Network Administrator with 10+ years of experience in enterprise network management.",
     avatar: null as string | null,
-    joinedDate: 'January 15, 2024',
-    lastLogin: 'Today at 10:30 AM',
-    timezone: 'Pacific Time (UTC-8)',
-    language: 'English',
+    joinedDate: "January 15, 2024",
+    lastLogin: "Today at 10:30 AM",
+    timezone: "Pacific Time (UTC-8)",
+    language: "English",
     notifications: {
       email: true,
       push: true,
-      sms: false
+      sms: false,
     },
     security: {
       twoFactor: true,
-      lastPasswordChange: 'December 1, 2023',
-      loginAttempts: 0
-    }
+      lastPasswordChange: "December 1, 2023",
+      loginAttempts: 0,
+    },
   });
 
   const [editProfile, setEditProfile] = useState(profile);
@@ -59,27 +74,23 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
   };
 
   const tabs = [
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'settings', label: 'Settings', icon: Settings },
-    { id: 'security', label: 'Security', icon: Key },
-    { id: 'notifications', label: 'Notifications', icon: Bell }
+    { id: "profile", label: "Profile", icon: User },
+    // { id: "settings", label: "Settings", icon: Settings },
+    { id: "security", label: "Security", icon: Key },
+    { id: "notifications", label: "Notifications", icon: Bell },
   ];
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      <div className="max-w-6xl mx-auto p-6">
+      <div className="  mx-auto p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">User Profile</h1>
-            <p className="text-gray-400">Manage your account settings and preferences</p>
+            <p className="text-gray-400">
+              Manage your account settings and preferences
+            </p>
           </div>
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -96,7 +107,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                     />
                   ) : (
                     <div className="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                      {editProfile.firstName[0]}{editProfile.lastName[0]}
+                      {editProfile.firstName[0]}
+                      {editProfile.lastName[0]}
                     </div>
                   )}
                   {isEditing && (
@@ -115,7 +127,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                   {editProfile.firstName} {editProfile.lastName}
                 </h3>
                 <p className="text-gray-400">{editProfile.role}</p>
-                <p className="text-sm text-gray-500 mt-2">{editProfile.department}</p>
+                <p className="text-sm text-gray-500 mt-2">
+                  {editProfile.department}
+                </p>
               </div>
             </div>
 
@@ -130,8 +144,8 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       onClick={() => setActiveTab(tab.id)}
                       className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
                         activeTab === tab.id
-                          ? 'bg-blue-600 text-white'
-                          : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-400 hover:text-white hover:bg-gray-700"
                       }`}
                     >
                       <IconComponent className="w-4 h-4" />
@@ -147,10 +161,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
           <div className="lg:col-span-3">
             <div className="bg-gray-800 rounded-xl p-6">
               {/* Profile Tab */}
-              {activeTab === 'profile' && (
+              {activeTab === "profile" && (
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-white">Profile Information</h2>
+                    <h2 className="text-xl font-semibold text-white">
+                      Profile Information
+                    </h2>
                     {!isEditing ? (
                       <button
                         onClick={() => setIsEditing(true)}
@@ -186,7 +202,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       <input
                         type="text"
                         value={editProfile.firstName}
-                        onChange={(e) => setEditProfile({ ...editProfile, firstName: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            firstName: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                       />
@@ -199,7 +220,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       <input
                         type="text"
                         value={editProfile.lastName}
-                        onChange={(e) => setEditProfile({ ...editProfile, lastName: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            lastName: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                       />
@@ -212,7 +238,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       <input
                         type="email"
                         value={editProfile.email}
-                        onChange={(e) => setEditProfile({ ...editProfile, email: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            email: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                       />
@@ -225,7 +256,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       <input
                         type="tel"
                         value={editProfile.phone}
-                        onChange={(e) => setEditProfile({ ...editProfile, phone: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            phone: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                       />
@@ -238,7 +274,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       <input
                         type="text"
                         value={editProfile.department}
-                        onChange={(e) => setEditProfile({ ...editProfile, department: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            department: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                       />
@@ -251,7 +292,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       <input
                         type="text"
                         value={editProfile.location}
-                        onChange={(e) => setEditProfile({ ...editProfile, location: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            location: e.target.value,
+                          })
+                        }
                         disabled={!isEditing}
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                       />
@@ -264,7 +310,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                     </label>
                     <textarea
                       value={editProfile.bio}
-                      onChange={(e) => setEditProfile({ ...editProfile, bio: e.target.value })}
+                      onChange={(e) =>
+                        setEditProfile({ ...editProfile, bio: e.target.value })
+                      }
                       disabled={!isEditing}
                       rows={4}
                       className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
@@ -292,10 +340,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
               )}
 
               {/* Settings Tab */}
-              {activeTab === 'settings' && (
+              {activeTab === "settings" && (
                 <div>
-                  <h2 className="text-xl font-semibold text-white mb-6">Account Settings</h2>
-                  
+                  <h2 className="text-xl font-semibold text-white mb-6">
+                    Account Settings
+                  </h2>
+
                   <div className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -303,13 +353,26 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       </label>
                       <select
                         value={editProfile.timezone}
-                        onChange={(e) => setEditProfile({ ...editProfile, timezone: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            timezone: e.target.value,
+                          })
+                        }
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="Pacific Time (UTC-8)">Pacific Time (UTC-8)</option>
-                        <option value="Mountain Time (UTC-7)">Mountain Time (UTC-7)</option>
-                        <option value="Central Time (UTC-6)">Central Time (UTC-6)</option>
-                        <option value="Eastern Time (UTC-5)">Eastern Time (UTC-5)</option>
+                        <option value="Pacific Time (UTC-8)">
+                          Pacific Time (UTC-8)
+                        </option>
+                        <option value="Mountain Time (UTC-7)">
+                          Mountain Time (UTC-7)
+                        </option>
+                        <option value="Central Time (UTC-6)">
+                          Central Time (UTC-6)
+                        </option>
+                        <option value="Eastern Time (UTC-5)">
+                          Eastern Time (UTC-5)
+                        </option>
                         <option value="UTC">UTC</option>
                       </select>
                     </div>
@@ -320,7 +383,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       </label>
                       <select
                         value={editProfile.language}
-                        onChange={(e) => setEditProfile({ ...editProfile, language: e.target.value })}
+                        onChange={(e) =>
+                          setEditProfile({
+                            ...editProfile,
+                            language: e.target.value,
+                          })
+                        }
                         className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="English">English</option>
@@ -335,27 +403,37 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
               )}
 
               {/* Security Tab */}
-              {activeTab === 'security' && (
+              {activeTab === "security" && (
                 <div>
-                  <h2 className="text-xl font-semibold text-white mb-6">Security Settings</h2>
-                  
+                  <h2 className="text-xl font-semibold text-white mb-6">
+                    Security Settings
+                  </h2>
+
                   <div className="space-y-6">
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-medium text-white">Two-Factor Authentication</h3>
-                          <p className="text-sm text-gray-400">Add an extra layer of security to your account</p>
+                          <h3 className="text-lg font-medium text-white">
+                            Two-Factor Authentication
+                          </h3>
+                          <p className="text-sm text-gray-400">
+                            Add an extra layer of security to your account
+                          </p>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <span className={`px-2 py-1 text-xs rounded-full ${
-                            profile.security.twoFactor 
-                              ? 'bg-green-900 text-green-300' 
-                              : 'bg-red-900 text-red-300'
-                          }`}>
-                            {profile.security.twoFactor ? 'Enabled' : 'Disabled'}
+                          <span
+                            className={`px-2 py-1 text-xs rounded-full ${
+                              profile.security.twoFactor
+                                ? "bg-green-900 text-green-300"
+                                : "bg-red-900 text-red-300"
+                            }`}
+                          >
+                            {profile.security.twoFactor
+                              ? "Enabled"
+                              : "Disabled"}
                           </span>
                           <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
-                            {profile.security.twoFactor ? 'Disable' : 'Enable'}
+                            {profile.security.twoFactor ? "Disable" : "Enable"}
                           </button>
                         </div>
                       </div>
@@ -364,8 +442,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-medium text-white">Change Password</h3>
-                          <p className="text-sm text-gray-400">Last changed: {profile.security.lastPasswordChange}</p>
+                          <h3 className="text-lg font-medium text-white">
+                            Change Password
+                          </h3>
+                          <p className="text-sm text-gray-400">
+                            Last changed: {profile.security.lastPasswordChange}
+                          </p>
                         </div>
                         <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
                           Change Password
@@ -375,8 +457,13 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
 
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div>
-                        <h3 className="text-lg font-medium text-white mb-2">Login Activity</h3>
-                        <p className="text-sm text-gray-400 mb-2">Recent failed login attempts: {profile.security.loginAttempts}</p>
+                        <h3 className="text-lg font-medium text-white mb-2">
+                          Login Activity
+                        </h3>
+                        <p className="text-sm text-gray-400 mb-2">
+                          Recent failed login attempts:{" "}
+                          {profile.security.loginAttempts}
+                        </p>
                         <button className="text-blue-400 hover:text-blue-300 text-sm transition-colors">
                           View all login activity
                         </button>
@@ -387,25 +474,36 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
               )}
 
               {/* Notifications Tab */}
-              {activeTab === 'notifications' && (
+              {activeTab === "notifications" && (
                 <div>
-                  <h2 className="text-xl font-semibold text-white mb-6">Notification Preferences</h2>
-                  
+                  <h2 className="text-xl font-semibold text-white mb-6">
+                    Notification Preferences
+                  </h2>
+
                   <div className="space-y-6">
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-medium text-white">Email Notifications</h3>
-                          <p className="text-sm text-gray-400">Receive notifications via email</p>
+                          <h3 className="text-lg font-medium text-white">
+                            Email Notifications
+                          </h3>
+                          <p className="text-sm text-gray-400">
+                            Receive notifications via email
+                          </p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
                             type="checkbox"
                             checked={editProfile.notifications.email}
-                            onChange={(e) => setEditProfile({
-                              ...editProfile,
-                              notifications: { ...editProfile.notifications, email: e.target.checked }
-                            })}
+                            onChange={(e) =>
+                              setEditProfile({
+                                ...editProfile,
+                                notifications: {
+                                  ...editProfile.notifications,
+                                  email: e.target.checked,
+                                },
+                              })
+                            }
                             className="sr-only peer"
                           />
                           <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -416,17 +514,26 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-medium text-white">Push Notifications</h3>
-                          <p className="text-sm text-gray-400">Receive push notifications in the browser</p>
+                          <h3 className="text-lg font-medium text-white">
+                            Push Notifications
+                          </h3>
+                          <p className="text-sm text-gray-400">
+                            Receive push notifications in the browser
+                          </p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
                             type="checkbox"
                             checked={editProfile.notifications.push}
-                            onChange={(e) => setEditProfile({
-                              ...editProfile,
-                              notifications: { ...editProfile.notifications, push: e.target.checked }
-                            })}
+                            onChange={(e) =>
+                              setEditProfile({
+                                ...editProfile,
+                                notifications: {
+                                  ...editProfile.notifications,
+                                  push: e.target.checked,
+                                },
+                              })
+                            }
                             className="sr-only peer"
                           />
                           <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -437,17 +544,26 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="text-lg font-medium text-white">SMS Notifications</h3>
-                          <p className="text-sm text-gray-400">Receive notifications via SMS</p>
+                          <h3 className="text-lg font-medium text-white">
+                            SMS Notifications
+                          </h3>
+                          <p className="text-sm text-gray-400">
+                            Receive notifications via SMS
+                          </p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input
                             type="checkbox"
                             checked={editProfile.notifications.sms}
-                            onChange={(e) => setEditProfile({
-                              ...editProfile,
-                              notifications: { ...editProfile.notifications, sms: e.target.checked }
-                            })}
+                            onChange={(e) =>
+                              setEditProfile({
+                                ...editProfile,
+                                notifications: {
+                                  ...editProfile.notifications,
+                                  sms: e.target.checked,
+                                },
+                              })
+                            }
                             className="sr-only peer"
                           />
                           <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>

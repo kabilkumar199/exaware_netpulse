@@ -1,4 +1,84 @@
 // Route configuration for better maintainability
+import React from "react";
+import {
+  LayoutDashboard,
+  Search,
+  Network,
+  Server,
+  Settings,
+  Activity,
+  Wrench,
+  Building2,
+  Building,
+  Map,
+  MapPin,
+  Factory,
+  Package,
+  UserCheck,
+  Play,
+  History,
+  TrendingUp,
+  BarChart3,
+  Wifi,
+  Layers,
+  Cloud,
+  FileText,
+  Monitor,
+  Share2,
+  CheckCircle,
+  Route,
+  Key,
+  Tag,
+  Clock,
+  Shield,
+  Users,
+  Bell,
+  Database,
+  HardDrive,
+  Link,
+} from "lucide-react";
+
+// Icon map for navigation items
+export const ICON_MAP: {
+  [key: string]: React.ComponentType<{ className?: string }>;
+} = {
+  dashboard: LayoutDashboard,
+  search: Search,
+  play: Play,
+  history: History,
+  network: Network,
+  server: Server,
+  share: Share2,
+  map: Map,
+  chart: BarChart3,
+  "check-circle": CheckCircle,
+  "file-text": FileText,
+  settings: Settings,
+  key: Key,
+  tag: Tag,
+  clock: Clock,
+  activity: Activity,
+  "trending-up": TrendingUp,
+  "bar-chart": BarChart3,
+  wifi: Wifi,
+  layers: Layers,
+  cloud: Cloud,
+  database: Database,
+  harddrive: HardDrive,
+  wrench: Wrench,
+  bell: Bell,
+  users: Users,
+  shield: Shield,
+  "map-pin": MapPin,
+  "building-2": Building2,
+  building: Building,
+  factory: Factory,
+  "server-rack": Server,
+  "user-check": UserCheck,
+  link: Link,
+  route: Route,
+} as const;
+
 export const ROUTES = {
   // Auth
   AUTH: {
@@ -40,9 +120,6 @@ export const ROUTES = {
     BACKUPS: "/management/backups",
     FIRMWARE: "/management/firmware",
     ALERTS: "/management/alerts",
-    USERS: "/management/users",
-    ROLES: "/management/roles",
-    PROFILE: "/management/profile",
   },
 
   // Settings routes
@@ -50,7 +127,10 @@ export const ROUTES = {
     BASE: "/settings",
     CREDENTIALS: "/settings/credentials",
     GRAFANA: "/settings/grafana",
+    USERS: "/settings/users",
+    ROLES: "/settings/roles",
     L2_SERVICES: "/settings/l2-services",
+    PROFILE: "/profile",
   },
 
   // Direct component routes
@@ -71,13 +151,69 @@ export const NAVIGATION_ITEMS = [
     icon: "dashboard",
   },
   {
+    id: "organization",
+    label: "Organization",
+    path: ROUTES.ORGANIZATION.BASE,
+    icon: "building-2",
+    children: [
+      {
+        id: "regions",
+        icon: "map",
+        label: "Regions",
+        path: ROUTES.ORGANIZATION.REGIONS,
+      },
+      {
+        id: "sites",
+        icon: "building-2",
+        label: "Sites",
+        path: ROUTES.ORGANIZATION.SITES,
+      },
+      {
+        id: "locations",
+        icon: "map-pin",
+        label: "Locations",
+        path: ROUTES.ORGANIZATION.LOCATIONS,
+      },
+      {
+        id: "manufacturers",
+        label: "Manufacturers",
+        icon: "factory",
+
+        path: ROUTES.ORGANIZATION.MANUFACTURERS,
+      },
+      {
+        id: "racks",
+        label: "Racks",
+        icon: "server-rack",
+        path: ROUTES.ORGANIZATION.RACKS,
+      },
+      {
+        id: "device-roles",
+        label: "Device Roles",
+        icon: "user-check",
+
+        path: ROUTES.ORGANIZATION.DEVICE_ROLES,
+      },
+    ],
+  },
+  {
     id: "discovery",
     label: "Discovery",
     path: ROUTES.DISCOVERY,
     icon: "search",
     children: [
-      { id: "new-scan", label: "New Scan", path: ROUTES.DISCOVERY },
-      { id: "scan-history", label: "Scan History", path: ROUTES.DISCOVERY },
+      {
+        id: "new-scan",
+        label: "New Scan",
+        icon: "play",
+        path: ROUTES.DISCOVERY,
+      },
+      {
+        id: "scan-history",
+        label: "Scan History",
+        icon: "history",
+        path: ROUTES.DISCOVERY,
+      },
     ],
   },
   {
@@ -92,32 +228,7 @@ export const NAVIGATION_ITEMS = [
     path: ROUTES.TOPOLOGY,
     icon: "network",
   },
-  {
-    id: "organization",
-    label: "Organization",
-    path: ROUTES.ORGANIZATION.BASE,
-    icon: "building-2",
-    children: [
-      { id: "regions", label: "Regions", path: ROUTES.ORGANIZATION.REGIONS },
-      { id: "sites", label: "Sites", path: ROUTES.ORGANIZATION.SITES },
-      {
-        id: "locations",
-        label: "Locations",
-        path: ROUTES.ORGANIZATION.LOCATIONS,
-      },
-      {
-        id: "manufacturers",
-        label: "Manufacturers",
-        path: ROUTES.ORGANIZATION.MANUFACTURERS,
-      },
-      { id: "racks", label: "Racks", path: ROUTES.ORGANIZATION.RACKS },
-      {
-        id: "device-roles",
-        label: "Device Roles",
-        path: ROUTES.ORGANIZATION.DEVICE_ROLES,
-      },
-    ],
-  },
+
   {
     id: "monitoring",
     label: "Monitoring",
@@ -126,23 +237,34 @@ export const NAVIGATION_ITEMS = [
     children: [
       {
         id: "performance",
+        icon: "trending-up",
+
         label: "Performance",
         path: ROUTES.MONITORING.PERFORMANCE,
       },
       {
         id: "traffic",
         label: "Traffic Analysis",
+        icon: "bar-chart",
+
         path: ROUTES.MONITORING.TRAFFIC,
       },
-      { id: "wireless", label: "Wireless", path: ROUTES.MONITORING.WIRELESS },
+      {
+        id: "wireless",
+        label: "Wireless",
+        icon: "wifi",
+        path: ROUTES.MONITORING.WIRELESS,
+      },
       {
         id: "applications",
+        icon: "layers",
+
         label: "Applications",
         path: ROUTES.MONITORING.APPLICATIONS,
       },
       { id: "cloud", label: "Cloud Resources", path: ROUTES.MONITORING.CLOUD },
       { id: "logs", label: "Log Management", path: ROUTES.MONITORING.LOGS },
-      { id: "grafana", label: "Grafana", path: ROUTES.MONITORING.GRAFANA },
+      // { id: "grafana", label: "Grafana", path: ROUTES.MONITORING.GRAFANA },
     ],
   },
   {
@@ -159,9 +281,6 @@ export const NAVIGATION_ITEMS = [
       { id: "backups", label: "Backups", path: ROUTES.MANAGEMENT.BACKUPS },
       { id: "firmware", label: "Firmware", path: ROUTES.MANAGEMENT.FIRMWARE },
       { id: "alerts", label: "Alerts", path: ROUTES.MANAGEMENT.ALERTS },
-      { id: "users", label: "Users", path: ROUTES.MANAGEMENT.USERS },
-      { id: "roles", label: "Roles", path: ROUTES.MANAGEMENT.ROLES },
-      { id: "profile", label: "Profile", path: ROUTES.MANAGEMENT.PROFILE },
     ],
   },
   {
@@ -171,15 +290,30 @@ export const NAVIGATION_ITEMS = [
     icon: "settings",
     children: [
       {
+        id: "nav-user-management",
+        label: "User Management",
+        icon: "users",
+        path: "/settings/users",
+        children: [
+          {
+            id: "users",
+            label: "Users",
+            icon: "users",
+            path: ROUTES.SETTINGS.USERS,
+          },
+          {
+            id: "roles",
+            label: "Roles",
+            icon: "shield",
+            path: ROUTES.SETTINGS.ROLES,
+          },
+        ],
+      },
+      { id: "profile", label: "Profile", path: ROUTES.SETTINGS.PROFILE },
+      {
         id: "credentials",
         label: "Credentials",
         path: ROUTES.SETTINGS.CREDENTIALS,
-      },
-      { id: "grafana", label: "Grafana", path: ROUTES.SETTINGS.GRAFANA },
-      {
-        id: "l2-services",
-        label: "L2 Services",
-        path: ROUTES.SETTINGS.L2_SERVICES,
       },
     ],
   },

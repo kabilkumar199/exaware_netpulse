@@ -10,7 +10,7 @@ const DevicesPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const handleDeviceSelect = (device: Device) => {
-    navigate(`/devices/${device.id}`);
+    navigate(`/device/${device.id}`);
   };
 
   useEffect(() => {

@@ -9,8 +9,8 @@ import type {
 import { mockCredentials } from "../../data/mockData";
 
 interface DiscoveryWizardProps {
-  onComplete: (scan: DiscoveryScan) => void;
-  onCancel: () => void;
+  onComplete?: (scan: DiscoveryScan) => void;
+  onCancel?: () => void;
 }
 
 const DiscoveryWizard: React.FC<DiscoveryWizardProps> = ({
@@ -191,7 +191,7 @@ const DiscoveryWizard: React.FC<DiscoveryWizardProps> = ({
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    onComplete(newScan);
+    onComplete?.(newScan);
   };
 
   const renderStepContent = () => {

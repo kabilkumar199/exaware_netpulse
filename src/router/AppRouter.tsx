@@ -7,7 +7,6 @@ import Login from "../pages/Auth/Login";
 // Main Pages
 import Dashboard from "../pages/Dashboard/Dashboard";
 import DevicesPage from "../pages/Devices/DevicesPage";
-// import DeviceDetailsPage from "../pages/Devices/DeviceDetailsPage";
 import DiscoveryPage from "../pages/Discovery/DiscoveryPage";
 import TopologyPage from "../pages/TopologyPage";
 
@@ -61,117 +60,99 @@ const AppRouter: React.FC = () => {
           <Route index element={<Navigate to={ROUTES.DASHBOARD} replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="devices" element={<DevicesPage />} />
-          {/* <Route path="devices/:id" element={<DeviceDetailsPage />} /> */}
           <Route path="discovery" element={<DiscoveryPage />} />
           <Route path="topology" element={<TopologyPage />} />
 
           {/* Direct Component Access Routes (for modals/overlays) */}
           <Route
             path="device/:id"
-            element={<DeviceDetails device={{} as any} onClose={() => {}} />}
+            element={<DeviceDetails />}
           />
           <Route
             path="discovery/wizard"
-            element={
-              <DiscoveryWizard onComplete={() => {}} onCancel={() => {}} />
-            }
+            element={<DiscoveryWizard />}
           />
           <Route
             path="discovery/netbox"
-            element={
-              <NetBoxImporter onComplete={() => {}} onCancel={() => {}} />
-            }
+            element={<NetBoxImporter />}
           />
           <Route
             path="topology/view"
-            element={
-              <TopologyScansView
-                onDeviceSelect={() => {}}
-                onSiteSelect={() => {}}
-                scans={[]}
-              />
-            }
+            element={<TopologyScansView scans={[]} />}
           />
 
           {/* Monitoring Direct Routes */}
           <Route
             path="monitoring/performance/:deviceId?"
-            element={
-              <PerformanceDashboard device={undefined} onClose={() => {}} />
-            }
+            element={<PerformanceDashboard device={undefined} />}
           />
           <Route
             path="monitoring/traffic"
-            element={<NetworkTrafficAnalysis onClose={() => {}} />}
+            element={<NetworkTrafficAnalysis />}
           />
           <Route
             path="monitoring/wireless"
-            element={<WirelessNetworkMonitor onClose={() => {}} />}
+            element={<WirelessNetworkMonitor />}
           />
           <Route
             path="monitoring/applications"
-            element={<ApplicationPerformanceMonitor onClose={() => {}} />}
+            element={<ApplicationPerformanceMonitor />}
           />
           <Route
             path="monitoring/cloud"
-            element={<CloudResourcesMonitor onClose={() => {}} />}
+            element={<CloudResourcesMonitor />}
           />
           <Route
             path="monitoring/logs"
-            element={<LogManagement onClose={() => {}} />}
+            element={<LogManagement />}
           />
           <Route
             path="monitoring/grafana"
-            element={<GrafanaView onClose={() => {}} />}
+            element={<GrafanaView />}
           />
 
           {/* Management Direct Routes */}
           <Route
             path="management/configuration/:deviceId?"
-            element={
-              <ConfigurationManager
-                onClose={() => {}}
-                selectedDevice={undefined}
-              />
-            }
+            element={<ConfigurationManager selectedDevice={undefined} />}
           />
           <Route
             path="management/backups"
-            element={<BackupManagement onClose={() => {}} />}
+            element={<BackupManagement />}
           />
           <Route
             path="management/firmware"
-            element={<FirmwareManagement onClose={() => {}} />}
+            element={<FirmwareManagement />}
           />
           <Route
             path="management/alerts"
-            element={<AlertManagement onClose={() => {}} />}
+            element={<AlertManagement />}
           />
           <Route
-            path="management/users"
-            element={<UserList onClose={() => {}} />}
+            path="settings/users"
+            element={<UserList />}
           />
           <Route
-            path="management/roles"
-            element={<UserRole onClose={() => {}} />}
+            path="settings/roles"
+            element={<UserRole />}
           />
           <Route
-            path="management/profile"
-            element={<UserProfile onClose={() => {}} />}
+            path="/profile"
+            element={<UserProfile />}
           />
 
           {/* Settings Direct Routes */}
           <Route
             path="settings/credentials"
-            element={<CredentialsManager onClose={() => {}} />}
+            element={<CredentialsManager />}
           />
           <Route
             path="settings/grafana"
-            element={<GrafanaConfig onClose={() => {}} />}
+            element={<GrafanaConfig />}
           />
           <Route
             path="settings/l2-services"
-            element={<L2ServicesConfig onClose={() => {}} />}
+            element={<L2ServicesConfig />}
           />
 
           {/* Organization Direct Routes */}

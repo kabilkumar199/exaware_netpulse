@@ -149,14 +149,6 @@ const NetworkTrafficAnalysis: React.FC<NetworkTrafficAnalysisProps> = ({ onClose
             Real-time network traffic monitoring and analysis
           </p>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            <span className="text-2xl">×</span>
-          </button>
-        )}
       </div>
 
       {/* Time Range Selector */}

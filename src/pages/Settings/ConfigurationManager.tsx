@@ -180,14 +180,6 @@ const ConfigurationManager: React.FC<ConfigurationManagerProps> = ({ onClose, se
             Manage device configurations, backups, and compliance
           </p>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            <span className="text-2xl">×</span>
-          </button>
-        )}
       </div>
 
       {/* Device Context Banner */}

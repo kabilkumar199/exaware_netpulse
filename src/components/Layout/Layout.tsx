@@ -64,11 +64,11 @@ const Layout: React.FC = () => {
         <Header onMenuClick={toggleSidebar} title={title} subtitle={subtitle} />
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-6 bg-gray-900">
+        <main className="flex-1 overflow-y-auto p-5 bg-gray-900">
           <Outlet />
         </main>
         {/* Footer */}
-        <footer className="border-t border-gray-800 bg-gray-900 px-6 py-4 text-center">
+        <footer className="border-t border-gray-800 bg-gray-900 px-5 py-3 text-center">
           <p className="text-sm text-gray-500">
             {" "}
             © {new Date().getFullYear()} Exaware Routing Ltd. — NMS 2.1.6

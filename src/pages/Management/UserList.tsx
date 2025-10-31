@@ -17,7 +17,7 @@ interface User {
 }
 
 interface UserListProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const UserList: React.FC<UserListProps> = ({ onClose }) => {
@@ -140,12 +140,6 @@ const UserList: React.FC<UserListProps> = ({ onClose }) => {
             <p className="text-gray-400">Manage system users and their access</p>
           </div>
           <div className="flex space-x-3">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
-            >
-              Cancel
-            </button>
             <button
               onClick={() => {
                 setEditingUser(null);

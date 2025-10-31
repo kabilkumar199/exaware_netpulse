@@ -18,7 +18,6 @@ import type {
   Schedule,
   NavigationItem,
   LogEntry,
-  CTCInfo,
 } from "../types";
 
 // Mock Locations
@@ -499,8 +498,8 @@ export const mockDevices: Device[] = [
         customerName: "ABC Corporation",
         phone: "+1-555-0123",
         email: "admin@abccorp.com",
-        address: "123 Business St, San Francisco, CA 94105"
-      }
+        address: "123 Business St, San Francisco, CA 94105",
+      },
     },
     createdAt: new Date("2023-12-01"),
     updatedAt: new Date("2024-01-15"),
@@ -544,8 +543,8 @@ export const mockDevices: Device[] = [
         customerName: "XYZ Enterprises",
         phone: "+1-555-0456",
         email: "it@xyzent.com",
-        address: "456 Enterprise Ave, New York, NY 10001"
-      }
+        address: "456 Enterprise Ave, New York, NY 10001",
+      },
     },
     createdAt: new Date("2023-11-15"),
     updatedAt: new Date("2024-01-15"),
@@ -589,8 +588,8 @@ export const mockDevices: Device[] = [
         customerName: "John Smith",
         phone: "+1-555-0789",
         email: "john.smith@email.com",
-        address: "789 Home St, San Francisco, CA 94102"
-      }
+        address: "789 Home St, San Francisco, CA 94102",
+      },
     },
     createdAt: new Date("2023-10-01"),
     updatedAt: new Date("2024-01-15"),
@@ -1370,16 +1369,16 @@ export const mockNavigationItems: NavigationItem[] = [
         path: "/monitoring/cloud",
       },
       {
-        id: "nav-monitoring-logs",
-        label: "Log Management",
-        icon: "file-text",
-        path: "/monitoring/logs",
+        id: "nav-alert-management",
+        label: "Alerts",
+        icon: "bell",
+        path: "/monitoring/alerts",
       },
       {
-        id: "nav-monitoring-grafana",
-        label: "Grafana",
-        icon: "chart",
-        path: "/monitoring/grafana",
+        id: "nav-monitoring-logs",
+        label: "Logs",
+        icon: "file-text",
+        path: "/monitoring/logs",
       },
     ],
   },
@@ -1389,26 +1388,6 @@ export const mockNavigationItems: NavigationItem[] = [
     icon: "settings",
     path: "/management",
     children: [
-      {
-        id: "nav-user-management",
-        label: "User Management",
-        icon: "users",
-        path: "/management/users",
-        children: [
-          {
-            id: "nav-user-list",
-            label: "User List",
-            icon: "users",
-            path: "/management/users/list",
-          },
-          {
-            id: "nav-user-roles",
-            label: "User Roles",
-            icon: "shield",
-            path: "/management/users/roles",
-          },
-        ],
-      },
       {
         id: "nav-config-management",
         label: "Configuration",
@@ -1426,12 +1405,6 @@ export const mockNavigationItems: NavigationItem[] = [
         label: "Firmware",
         icon: "harddrive",
         path: "/management/firmware",
-      },
-      {
-        id: "nav-alert-management",
-        label: "Alerts",
-        icon: "bell",
-        path: "/management/alerts",
       },
     ],
   },
@@ -1464,6 +1437,26 @@ export const mockNavigationItems: NavigationItem[] = [
         label: "Schedules",
         icon: "clock",
         path: "/settings/schedules",
+      },
+      {
+        id: "nav-user-management",
+        label: "User Management",
+        icon: "users",
+        path: "/settings/users",
+        children: [
+          {
+            id: "nav-user-list",
+            label: "User List",
+            icon: "users",
+            path: "/settings/users/list",
+          },
+          {
+            id: "nav-user-roles",
+            label: "User Roles",
+            icon: "shield",
+            path: "/settings/users/roles",
+          },
+        ],
       },
       {
         id: "nav-settings-grafana",
