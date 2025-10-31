@@ -12,7 +12,7 @@ import {
   ChevronDown,
   X,
 } from "lucide-react";
-import Logo from "./Logo";
+import Logo from "../Layout/Logo";
 import { NAVIGATION_ITEMS } from "../../router/routes";
 
 interface SidebarProps {
