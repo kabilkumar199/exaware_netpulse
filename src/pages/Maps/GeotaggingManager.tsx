@@ -162,14 +162,6 @@ const GeotaggingManager: React.FC<GeotaggingManagerProps> = ({ onClose }) => {
             Manage geographic locations for devices and sites
           </p>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
-        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

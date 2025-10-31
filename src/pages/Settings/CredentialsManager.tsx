@@ -197,14 +197,6 @@ const CredentialsManager: React.FC<CredentialsManagerProps> = ({ onClose }) => {
             <span>➕</span>
             <span>Add Credential</span>
           </button>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-white"
-            >
-              ✕
-            </button>
-          )}
         </div>
       </div>
 

@@ -29,14 +29,6 @@ const GrafanaView: React.FC<GrafanaViewProps> = ({ onClose }) => {
             <ExternalLink className="w-4 h-4" />
             <span>Open in Grafana</span>
           </a>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
-            >
-              ✕
-            </button>
-          )}
         </div>
       </div>
 

@@ -62,14 +62,6 @@ const PathAnalysis: React.FC<PathAnalysisProps> = ({ onClose }) => {
             Analyze network paths and connectivity between devices
           </p>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
-        )}
       </div>
 
       {/* Analysis Form */}

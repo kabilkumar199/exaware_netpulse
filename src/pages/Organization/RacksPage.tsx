@@ -64,7 +64,7 @@ const RacksPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-slate-900 min-h-screen text-white space-y-6">
+    <div className="p-5 bg-slate-900 min-h-screen text-white space-y-5">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Racks</h1>
         <button

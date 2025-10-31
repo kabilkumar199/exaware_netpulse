@@ -51,7 +51,7 @@ const ManufacturersPage: React.FC = () => {
   );
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen text-white space-y-6">
+    <div className="p-5 bg-gray-900 min-h-screen text-white space-y-5">
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-white">Manufacturers</h1>

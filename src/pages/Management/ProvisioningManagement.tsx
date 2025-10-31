@@ -141,12 +141,6 @@ const ProvisioningManagement: React.FC<ProvisioningManagementProps> = ({ onClose
               <h1 className="text-xl font-semibold text-white">Device Provisioning</h1>
               <p className="text-sm text-gray-400">Deploy and provision network devices</p>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-white"
-            >
-              ✕
-            </button>
           </div>
         </div>
 

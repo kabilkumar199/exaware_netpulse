@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
-import { Plus, Eye, Settings, Edit } from 'lucide-react';
-import type { Device } from '../../types';
-import { mockDevices } from '../../data/mockData';
-import AddDeviceModal from '../modals/AddDeviceModal';
-import { DataTable, type TableColumn, type FilterConfig, StatusBadge, DeviceIcon, ActionButtons, formatLastSeen } from '../ui';
- 
+import React, { useState } from "react";
+import { Plus, Eye, Settings, Edit } from "lucide-react";
+import type { Device } from "../../types";
+import { mockDevices } from "../../data/mockData";
+import AddDeviceModal from "../modals/AddDeviceModal";
+import {
+  DataTable,
+  type TableColumn,
+  type FilterConfig,
+  StatusBadge,
+  DeviceIcon,
+  ActionButtons,
+  formatLastSeen,
+} from "../ui";
+
 interface DeviceListProps {
   onDeviceSelect: (device: Device) => void;
   onConfigureL2Services?: (device: Device) => void;
 }
 
-const DeviceList: React.FC<DeviceListProps> = ({ 
-  onDeviceSelect, 
-  onConfigureL2Services 
+const DeviceList: React.FC<DeviceListProps> = ({
+  onDeviceSelect,
+  onConfigureL2Services,
 }) => {
   const [devices] = useState<Device[]>(mockDevices);
   const [showAddDeviceModal, setShowAddDeviceModal] = useState(false);
@@ -21,34 +29,35 @@ const DeviceList: React.FC<DeviceListProps> = ({
   // Define table columns
   const columns: TableColumn<Device>[] = [
     {
-      key: 'hostname',
-      title: 'Device',
+      key: "hostname",
+      title: "Device",
       sortable: true,
       searchable: true,
       render: (value: any, device: Device) => (
         <div className="flex items-center">
-          <DeviceIcon vendor={device.vendor} className="h-10 w-10 flex-shrink-0" />
+          <DeviceIcon
+            vendor={device.vendor}
+            className="h-10 w-10 flex-shrink-0"
+          />
           <div className="ml-4">
             <div className="text-sm font-medium text-white">
               {device.hostname}
             </div>
-            <div className="text-sm text-gray-400">
-              {device.fqdn}
-            </div>
+            <div className="text-sm text-gray-400">{device.fqdn}</div>
           </div>
         </div>
-      )
+      ),
     },
     {
-      key: 'status',
-      title: 'Status',
+      key: "status",
+      title: "Status",
       sortable: true,
       filterable: true,
-      render: (value: any) => <StatusBadge status={value} />
+      render: (value: any) => <StatusBadge status={value} />,
     },
     {
-      key: 'vendor',
-      title: 'Vendor/Model',
+      key: "vendor",
+      title: "Vendor/Model",
       sortable: true,
       searchable: true,
       render: (value: any, device: Device) => (
@@ -56,125 +65,117 @@ const DeviceList: React.FC<DeviceListProps> = ({
           <div className="text-sm text-white">{device.vendor}</div>
           <div className="text-sm text-gray-400">{device.model}</div>
         </div>
-      )
+      ),
     },
     {
-      key: 'ipAddresses',
-      title: 'IP Addresses',
+      key: "ipAddresses",
+      title: "IP Addresses",
       searchable: true,
-      render: (value: any) => (
-        <div className="text-sm text-white">
-          {value.slice(0, 2).join(', ')}
-          {value.length > 2 && (
-            <span className="text-gray-400">
-              {' '}+{value.length - 2} more
-            </span>
-          )}
-        </div>
-      )
+      render: (value: any) => {
+        const ipAddresses = Array.isArray(value) ? value : [];
+        return (
+          <div className="text-sm text-white">
+            {ipAddresses.slice(0, 2).join(", ")}
+            {ipAddresses.length > 2 && (
+              <span className="text-gray-400">
+                {" "}
+                +{ipAddresses.length - 2} more
+              </span>
+            )}
+          </div>
+        );
+      },
     },
     {
-      key: 'location',
-      title: 'Location',
+      key: "location",
+      title: "Location",
       render: (value: any) => (
-        <span className="text-sm text-white">
-          {value?.name || 'Unknown'}
-        </span>
-      )
+        <span className="text-sm text-white">{value?.name || "Unknown"}</span>
+      ),
     },
     {
-      key: 'lastSeen',
-      title: 'Last Seen',
+      key: "lastSeen",
+      title: "Last Seen",
       sortable: true,
       render: (value: any) => (
-        <span className="text-sm text-gray-400">
-          {formatLastSeen(value)}
-        </span>
-      )
+        <span className="text-sm text-gray-400">{formatLastSeen(value)}</span>
+      ),
     },
     {
-      key: 'actions',
-      title: 'Actions',
+      key: "actions",
+      title: "Actions",
       render: (value: any, device: Device) => (
         <ActionButtons
           actions={[
             {
-              label: 'View',
+              label: "View",
               onClick: (e) => {
                 e.stopPropagation();
                 onDeviceSelect(device);
               },
-              className: 'text-blue-400 hover:text-blue-300',
-              icon: <Eye className="h-4 w-4" />
+              className: "text-blue-400 hover:text-blue-300",
+              // icon: <Eye className="h-4 w-4" />,
             },
+
             {
-              label: 'L2 Config',
-              onClick: (e) => {
-                e.stopPropagation();
-                onConfigureL2Services?.(device);
-              },
-              className: 'text-green-400 hover:text-green-300',
-              icon: <Settings className="h-4 w-4" />
-            },
-            {
-              label: 'Edit',
+              label: "Edit",
               onClick: (e) => {
                 e.stopPropagation();
                 // Handle edit action
               },
-              className: 'text-gray-400 hover:text-gray-300',
-              icon: <Edit className="h-4 w-4" />
-            }
+              className: "text-gray-400 hover:text-gray-300",
+              // icon: <Edit className="h-4 w-4" />,
+            },
           ]}
         />
-      )
-    }
+      ),
+    },
   ];
 
   // Define filters
   const filters: FilterConfig[] = [
     {
-      key: 'status',
-      type: 'select',
-      label: 'Status',
+      key: "status",
+      type: "select",
+      label: "Status",
       options: [
-        { value: 'up', label: 'Up' },
-        { value: 'down', label: 'Down' },
-        { value: 'warning', label: 'Warning' },
-        { value: 'unknown', label: 'Unknown' }
-      ]
+        { value: "up", label: "Up" },
+        { value: "down", label: "Down" },
+        { value: "warning", label: "Warning" },
+        { value: "unknown", label: "Unknown" },
+      ],
     },
     {
-      key: 'vendor',
-      type: 'text',
-      label: 'Vendor',
-      placeholder: 'Filter by vendor...'
+      key: "vendor",
+      type: "text",
+      label: "Vendor",
+      placeholder: "Filter by vendor...",
     },
     {
-      key: 'roles',
-      type: 'select',
-      label: 'Roles',
+      key: "roles",
+      type: "select",
+      label: "Roles",
       options: [
-        { value: 'router', label: 'Router' },
-        { value: 'switch', label: 'Switch' },
-        { value: 'firewall', label: 'Firewall' },
-        { value: 'access-point', label: 'Access Point' }
-      ]
-    }
+        { value: "router", label: "Router" },
+        { value: "switch", label: "Switch" },
+        { value: "firewall", label: "Firewall" },
+        { value: "access-point", label: "Access Point" },
+      ],
+    },
   ];
 
   // Handle bulk actions
   const handleBulkDelete = () => {
     if (selectedDevices.length > 0) {
       // Implement bulk delete logic
-      console.log('Deleting devices:', selectedDevices);
+      console.log("Deleting devices:", selectedDevices);
     }
   };
 
   const handleBulkExport = () => {
     if (selectedDevices.length > 0) {
       // Implement bulk export logic
-      console.log('Exporting devices:', selectedDevices);
+      console.log("Exporting devices:", selectedDevices);
     }
   };
 
@@ -196,7 +197,7 @@ const DeviceList: React.FC<DeviceListProps> = ({
   );
 
   const headerActions = (
-    <button 
+    <button
       onClick={() => setShowAddDeviceModal(true)}
       className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
     >
@@ -219,16 +220,16 @@ const DeviceList: React.FC<DeviceListProps> = ({
           showSizeChanger: true,
           pageSizeOptions: [10, 25, 50, 100],
           showQuickJumper: false,
-          showTotal: true
+          showTotal: true,
         }}
         onRowClick={onDeviceSelect}
         onRefresh={() => {
           // Implement refresh logic
-          console.log('Refreshing devices...');
+          console.log("Refreshing devices...");
         }}
         onExport={() => {
           // Implement export logic
-          console.log('Exporting all devices...');
+          console.log("Exporting all devices...");
         }}
         headerActions={headerActions}
         selectedRows={selectedDevices}
@@ -237,13 +238,13 @@ const DeviceList: React.FC<DeviceListProps> = ({
         bulkActions={bulkActions}
         emptyMessage="No devices found"
         emptyIcon={<span className="text-4xl text-gray-600">🔍</span>}
-        rowClassName={(device, index) => 
-          selectedDevices.includes(device) ? 'bg-blue-900/20' : ''
+        rowClassName={(device, index) =>
+          selectedDevices.includes(device) ? "bg-blue-900/20" : ""
         }
       />
 
       {/* Add Device Modal */}
-      <AddDeviceModal 
+      <AddDeviceModal
         isOpen={showAddDeviceModal}
         onClose={() => setShowAddDeviceModal(false)}
       />

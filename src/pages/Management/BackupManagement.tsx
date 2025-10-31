@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 interface BackupManagementProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const BackupManagement: React.FC<BackupManagementProps> = ({ onClose }) => {
@@ -112,12 +112,6 @@ const BackupManagement: React.FC<BackupManagementProps> = ({ onClose }) => {
               <h1 className="text-xl font-semibold text-white">Configuration Backups</h1>
               <p className="text-sm text-gray-400">Manage device configuration backups and restore points</p>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-white"
-            >
-              ✕
-            </button>
           </div>
         </div>
 

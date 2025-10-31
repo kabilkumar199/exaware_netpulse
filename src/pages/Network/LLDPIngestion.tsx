@@ -112,14 +112,6 @@ const LLDPIngestion: React.FC<LLDPIngestionProps> = ({ onClose }) => {
             Discover and ingest network links using LLDP/CDP protocols
           </p>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
-        )}
       </div>
 
       {/* Device Selection */}
