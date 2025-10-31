@@ -7,7 +7,7 @@ import {
 } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Card } from "../../components/ui";
-import Logo from "../../components/layout/Logo";
+import Logo from "../../components/Layout/Logo";
 import axiosInstance from "../../services/api";
 
 const Login: React.FC = () => {

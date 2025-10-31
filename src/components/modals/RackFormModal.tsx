@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import type { Rack } from "../RacksPage";
+// import type { Rack } from "../RacksPage";
+import type { Rack } from "../../pages/Organization/RacksPage";
  
 interface Props {
   rack: Rack | null;
