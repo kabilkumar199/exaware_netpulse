@@ -7,6 +7,7 @@ import type {
   ScanOptions,
 } from "../../types";
 import { mockCredentials } from "../../data/mockData";
+import { useNavigate } from "react-router-dom";
 
 interface DiscoveryWizardProps {
   onComplete?: (scan: DiscoveryScan) => void;
@@ -17,6 +18,7 @@ const DiscoveryWizard: React.FC<DiscoveryWizardProps> = ({
   onComplete,
   onCancel,
 }) => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [scanName, setScanName] = useState("");
   const [seedDevices, setSeedDevices] = useState<SeedDevice[]>([]);
@@ -191,7 +193,8 @@ const DiscoveryWizard: React.FC<DiscoveryWizardProps> = ({
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    onComplete?.(newScan);
+    navigate('/topology');
+    
   };
 
   const renderStepContent = () => {
@@ -660,109 +663,94 @@ const DiscoveryWizard: React.FC<DiscoveryWizardProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex min-h-screen items-center justify-center p-4">
-        <div
-          className="fixed inset-0 bg-black bg-opacity-75 transition-opacity"
-          onClick={onCancel}
-        ></div>
+    <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
+  {/* Header */}
+  <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700 bg-gray-800">
+    <h2 className="text-xl font-semibold text-white">Network Discovery Wizard</h2>
+    <button
+      onClick={onCancel}
+      className="text-gray-400 hover:text-white text-2xl leading-none"
+    >
+      ✕
+    </button>
+  </div>
 
-        <div className="relative bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-          {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-700">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-white">
-                Network Discovery Wizard
-              </h2>
-              <button
-                onClick={onCancel}
-                className="text-gray-400 hover:text-white"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Progress Steps */}
-            <div className="mt-4">
-              <div className="flex items-center justify-between">
-                {steps.map((step, index) => (
-                  <div key={step.id} className="flex items-center">
-                    <div
-                      className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${
-                        currentStep >= step.id
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-600 text-gray-400"
-                      }`}
-                    >
-                      {step.id}
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div
-                        className={`w-16 h-0.5 mx-2 ${
-                          currentStep > step.id ? "bg-blue-600" : "bg-gray-600"
-                        }`}
-                      ></div>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-2 text-sm text-gray-400">
-                Step {currentStep} of {steps.length}:{" "}
-                {steps[currentStep - 1].title}
-              </div>
-            </div>
+  {/* Progress Steps */}
+  <div className="px-6 py-4 border-b border-gray-700 bg-gray-800">
+    <div className="flex items-center justify-between">
+      {steps.map((step, index) => (
+        <div key={step.id} className="flex items-center">
+          <div
+            className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${
+              currentStep >= step.id
+                ? "bg-blue-600 text-white"
+                : "bg-gray-600 text-gray-400"
+            }`}
+          >
+            {step.id}
           </div>
-
-          {/* Content */}
-          <div className="px-6 py-6 max-h-96 overflow-y-auto">
-            {renderStepContent()}
-          </div>
-
-          {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-700 bg-gray-700">
-            <div className="flex justify-between">
-              <button
-                onClick={prevStep}
-                disabled={currentStep === 1}
-                className="px-4 py-2 text-gray-300 bg-gray-600 border border-gray-600 rounded-lg hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Previous
-              </button>
-
-              <div className="space-x-3">
-                <button
-                  onClick={onCancel}
-                  className="px-4 py-2 text-gray-300 bg-gray-600 border border-gray-600 rounded-lg hover:bg-gray-500"
-                >
-                  Cancel
-                </button>
-
-                {currentStep === steps.length ? (
-                  <button
-                    onClick={startScan}
-                    disabled={!scanName || seedDevices.length === 0}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Start Scan
-                  </button>
-                ) : (
-                  <button
-                    onClick={nextStep}
-                    disabled={
-                      (currentStep === 1 && !scanName) ||
-                      (currentStep === 2 && seedDevices.length === 0)
-                    }
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Next
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+          {index < steps.length - 1 && (
+            <div
+              className={`w-16 h-0.5 mx-2 ${
+                currentStep > step.id ? "bg-blue-600" : "bg-gray-600"
+              }`}
+            ></div>
+          )}
         </div>
-      </div>
+      ))}
     </div>
+    <div className="mt-2 text-sm text-gray-400">
+      Step {currentStep} of {steps.length}: {steps[currentStep - 1].title}
+    </div>
+  </div>
+
+  {/* Content Area (scrollable) */}
+  <div className="flex-1 overflow-y-auto px-6 py-6 bg-gray-900">
+    {renderStepContent()}
+  </div>
+
+  {/* Footer */}
+  <div className="flex items-center justify-between px-6 py-4 border-t border-gray-700 bg-gray-800">
+    <button
+      onClick={prevStep}
+      disabled={currentStep === 1}
+      className="px-4 py-2 text-gray-300 bg-gray-600 border border-gray-600 rounded-lg hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Previous
+    </button>
+
+    <div className="space-x-3">
+      <button
+        onClick={onCancel}
+        className="px-4 py-2 text-gray-300 bg-gray-600 border border-gray-600 rounded-lg hover:bg-gray-500"
+      >
+        Cancel
+      </button>
+
+      {currentStep === steps.length ? (
+        <button
+          onClick={startScan}
+          disabled={!scanName || seedDevices.length === 0}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Start Scan
+        </button>
+      ) : (
+        <button
+          onClick={nextStep}
+          disabled={
+            (currentStep === 1 && !scanName) ||
+            (currentStep === 2 && seedDevices.length === 0)
+          }
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      )}
+    </div>
+  </div>
+</div>
+
   );
 };
 

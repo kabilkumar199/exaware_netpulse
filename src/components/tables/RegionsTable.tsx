@@ -1,5 +1,5 @@
 import React from "react";
-import type { Region } from "../Regions";
+import type { Region } from "../../pages/Organization/Regions";
 
 interface Props {
   regions: Region[];
