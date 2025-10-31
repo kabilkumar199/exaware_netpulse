@@ -27,7 +27,7 @@ const Regions: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-slate-900 min-h-screen text-white space-y-6">
+    <div className="p-5 bg-slate-900 min-h-screen text-white space-y-5">
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Regions</h1>
@@ -61,7 +61,7 @@ const Regions: React.FC = () => {
       {/* AddRegion Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-slate-900 p-6 rounded-xl border border-slate-700 shadow-lg w-full max-w-3xl relative max-h-[90vh] overflow-y-auto">
+          <div className="bg-slate-900 p-5 rounded-xl border border-slate-700 shadow-lg w-full max-w-3xl relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={handleCloseModal}
               className="absolute top-3 right-3 text-gray-400 hover:text-gray-100"

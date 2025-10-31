@@ -13,7 +13,7 @@ interface UserRole {
 }
 
 interface UserRoleProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const UserRole: React.FC<UserRoleProps> = ({ onClose }) => {
@@ -163,12 +163,6 @@ const UserRole: React.FC<UserRoleProps> = ({ onClose }) => {
             <p className="text-gray-400">Manage user roles and permissions</p>
           </div>
           <div className="flex space-x-3">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
-            >
-              Cancel
-            </button>
             <button
               onClick={() => {
                 setEditingRole(null);

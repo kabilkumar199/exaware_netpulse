@@ -5,8 +5,8 @@ import type { DiscoveryScan } from '../../types';
 import type { SlurpitTopology } from '../../types/netbox';
 
 interface NetBoxImporterProps {
-  onComplete: (scan: DiscoveryScan) => void;
-  onCancel: () => void;
+  onComplete?: (scan: DiscoveryScan) => void;
+  onCancel?: () => void;
 }
 
 const NetBoxImporter: React.FC<NetBoxImporterProps> = ({ onComplete, onCancel }) => {
@@ -37,7 +37,7 @@ const NetBoxImporter: React.FC<NetBoxImporterProps> = ({ onComplete, onCancel })
       
       setSuccess(true);
       setTimeout(() => {
-        onComplete(scan);
+        onComplete?.(scan);
       }, 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to import from NetBox');
@@ -64,7 +64,7 @@ const NetBoxImporter: React.FC<NetBoxImporterProps> = ({ onComplete, onCancel })
       
       setSuccess(true);
       setTimeout(() => {
-        onComplete(scan);
+        onComplete?.(scan);
       }, 1000);
     } catch (err) {
       setError('Invalid JSON format. Please check your data.');

@@ -1,15 +1,70 @@
-import React, { useState } from "react";
-import type { Device } from "../../types";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { Device, Interface } from "../../types";
+import type { RootState } from "../../store/store";
+import { ArrowLeft } from "lucide-react";
 
-interface DeviceDetailsProps {
-  device: Device;
-  onClose: () => void;
-}
-
-const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onClose }) => {
+const DeviceDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  
+  // Get device from Redux store
+  const devices = useSelector((state: RootState) => state.devices.devices);
+  const loading = useSelector((state: RootState) => state.devices.loading);
+  
+  // Find device by ID
+  const device = devices.find((d) => d.id === id);
+  
+  // If device not found in Redux, try mock data as fallback
+  const [fallbackDevice, setFallbackDevice] = useState<Device | null>(null);
+  
+  useEffect(() => {
+    if (!device && id) {
+      // Import and use mock data as fallback
+      import("../../data/mockData").then(({ mockDevices }) => {
+        const found = mockDevices.find((d) => d.id === id);
+        if (found) {
+          setFallbackDevice(found);
+        }
+      });
+    }
+  }, [device, id]);
+  
+  const currentDevice = device || fallbackDevice;
   const [activeTab, setActiveTab] = useState<
     "overview" | "peripherals" | "interface" | "vpls" | "lldp"
   >("overview");
+
+  // Handle device not found
+  if (!loading && !currentDevice && id) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-white mb-2">Device Not Found</h2>
+          <p className="text-gray-400 mb-4">Device with ID "{id}" could not be found.</p>
+          <button
+            onClick={() => navigate("/devices")}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Back to Devices
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Handle loading state
+  if (loading || !currentDevice) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading device details...</p>
+        </div>
+      </div>
+    );
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -66,17 +121,17 @@ const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onClose }) => {
         <div className="bg-gray-700 rounded-lg p-4">
           <h4 className="font-medium text-white mb-3">Information</h4>
           <div className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-gray-400">Hostname:</span><span className="text-white">{device.hostname}</span></div>
-            <div className="flex justify-between"><span className="text-gray-400">FQDN:</span><span className="text-white">{device.fqdn || "N/A"}</span></div>
-            <div className="flex justify-between"><span className="text-gray-400">Vendor:</span><span className="text-white">{device.vendor}</span></div>
-            <div className="flex justify-between"><span className="text-gray-400">Model:</span><span className="text-white">{device.model}</span></div>
-            <div className="flex justify-between"><span className="text-gray-400">OS:</span><span className="text-white">{device.os}</span></div>
-            <div className="flex justify-between"><span className="text-gray-400">Location:</span><span className="text-white">{device.location?.name || "Unknown"}</span></div>
-            <div className="flex justify-between"><span className="text-gray-400">Last Seen:</span><span className="text-white">{formatDate(device.lastSeen)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">Hostname:</span><span className="text-white">{currentDevice.hostname}</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">FQDN:</span><span className="text-white">{currentDevice.fqdn || "N/A"}</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">Vendor:</span><span className="text-white">{currentDevice.vendor}</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">Model:</span><span className="text-white">{currentDevice.model}</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">OS:</span><span className="text-white">{currentDevice.os}</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">Location:</span><span className="text-white">{currentDevice.location?.name || "Unknown"}</span></div>
+            <div className="flex justify-between"><span className="text-gray-400">Last Seen:</span><span className="text-white">{formatDate(currentDevice.lastSeen)}</span></div>
             <div>
               <span className="text-gray-400">IP Addresses:</span>
               <div className="mt-1 flex flex-wrap gap-1">
-                {device.ipAddresses.map((ip, index) => (
+                {(currentDevice.ipAddresses || []).map((ip: string, index: number) => (
                   <span key={index} className="text-white font-mono text-xs bg-gray-800 px-2 py-1 rounded">{ip}</span>
                 ))}
               </div>
@@ -91,28 +146,28 @@ const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onClose }) => {
             <div className="bg-gray-800 rounded p-3">
               <div className="text-xs text-gray-400 mb-1">Status</div>
               <div className="flex items-center gap-2">
-                <span className="text-xl">{getStatusIcon(device.status)}</span>
-                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(device.status)}`}>{device.status.toUpperCase()}</span>
+                <span className="text-xl">{getStatusIcon(currentDevice.status)}</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(currentDevice.status)}`}>{currentDevice.status.toUpperCase()}</span>
               </div>
             </div>
             <div className="bg-gray-800 rounded p-3">
               <div className="text-xs text-gray-400 mb-1">Interfaces</div>
-              <div className="text-lg text-white font-semibold">{device.interfaces.length}</div>
+              <div className="text-lg text-white font-semibold">{(currentDevice.interfaces || []).length}</div>
             </div>
             <div className="bg-gray-800 rounded p-3">
               <div className="text-xs text-gray-400 mb-1">Monitors</div>
-              <div className="text-lg text-white font-semibold">{device.monitors.length}</div>
+              <div className="text-lg text-white font-semibold">{(currentDevice.monitors || []).length}</div>
             </div>
             <div className="bg-gray-800 rounded p-3">
               <div className="text-xs text-gray-400 mb-1">Labels</div>
-              <div className="text-lg text-white font-semibold">{device.labels.length}</div>
+              <div className="text-lg text-white font-semibold">{(currentDevice.labels || []).length}</div>
             </div>
           </div>
-          {device.tags.length > 0 && (
+          {(currentDevice.tags || []).length > 0 && (
             <div className="mt-4">
               <div className="text-xs text-gray-400 mb-2">Tags</div>
               <div className="flex flex-wrap gap-2">
-                {device.tags.map((tag, i) => (
+                {(currentDevice.tags || []).map((tag: string, i: number) => (
                   <span key={i} className="px-2 py-1 bg-gray-600 text-gray-200 text-xs rounded-full">{tag}</span>
                 ))}
               </div>
@@ -127,7 +182,7 @@ const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onClose }) => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h4 className="font-medium text-white">
-          Interfaces ({device.interfaces.length})
+          Interfaces ({(currentDevice.interfaces || []).length})
         </h4>
         <button className="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
           Refresh
@@ -135,7 +190,7 @@ const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onClose }) => {
       </div>
 
       <div className="space-y-3">
-        {device.interfaces.map((iface) => (
+        {(currentDevice.interfaces || []).map((iface: Interface) => (
           <div key={iface.id} className="bg-gray-700 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-2">
@@ -230,28 +285,34 @@ const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onClose }) => {
       <div className="px-6 py-4 border-b border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
+            <button
+              onClick={() => navigate("/devices")}
+              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+              aria-label="Back to devices"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
             <div className="w-12 h-12 rounded-lg bg-gray-600 flex items-center justify-center">
               <span className="text-2xl">
-                {device.vendor === "Cisco"
+                {currentDevice.vendor === "Cisco"
                   ? "🔷"
-                  : device.vendor === "Dell"
+                  : currentDevice.vendor === "Dell"
                   ? "💻"
-                  : device.vendor === "Fortinet"
+                  : currentDevice.vendor === "Fortinet"
                   ? "🛡️"
                   : "🖥️"}
               </span>
             </div>
             <div>
               <h2 className="text-xl font-semibold text-white">
-                {device.hostname}
+                {currentDevice.hostname}
               </h2>
               <p className="text-sm text-gray-400">
-                {device.vendor} {device.model} •{" "}
-                {device.location?.name || "Unknown Location"}
+                {currentDevice.vendor} {currentDevice.model} •{" "}
+                {currentDevice.location?.name || "Unknown Location"}
               </p>
             </div>
           </div>
-           
         </div>
       </div>
 
@@ -268,7 +329,7 @@ const DeviceDetails: React.FC<DeviceDetailsProps> = ({ device, onClose }) => {
                   : "text-gray-400 hover:text-white"
               }`}
             >
-              <span>{tab.icon}</span>
+              {/* <span>{tab.icon}</span> */}
               <span>{tab.label}</span>
             </button>
           ))}

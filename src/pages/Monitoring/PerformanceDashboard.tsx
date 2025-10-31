@@ -137,14 +137,6 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
             </p>
           )}
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            <span className="text-2xl">×</span>
-          </button>
-        )}
       </div>
 
       {/* Metric Selector */}

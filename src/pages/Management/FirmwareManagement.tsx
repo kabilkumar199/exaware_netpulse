@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 interface FirmwareManagementProps {
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const FirmwareManagement: React.FC<FirmwareManagementProps> = ({ onClose }) => {
@@ -144,12 +144,6 @@ const FirmwareManagement: React.FC<FirmwareManagementProps> = ({ onClose }) => {
               <h1 className="text-xl font-semibold text-white">Firmware Management</h1>
               <p className="text-sm text-gray-400">Manage device firmware images and deployments</p>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-white"
-            >
-              ✕
-            </button>
           </div>
         </div>
 

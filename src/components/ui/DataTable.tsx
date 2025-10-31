@@ -111,7 +111,7 @@ function DataTable<T extends Record<string, any>>({
 
   // Filter and search data
   const filteredData = useMemo(() => {
-    let result = [...data];
+    let result = Array.isArray(data) ? [...data] : [];
 
     // Apply search
     if (searchTerm && searchable) {
@@ -274,7 +274,7 @@ function DataTable<T extends Record<string, any>>({
           )}
 
           {/* Filters Row */}
-          {filters.length > 0 && (
+          {Array.isArray(filters) && filters.length > 0 && (
             <>
               {filters.map((filter) => (
                 <div key={filter.key} className="min-w-0">
@@ -373,7 +373,7 @@ function DataTable<T extends Record<string, any>>({
                     />
                   </th>
                 )}
-                {columns.map((column, index) => (
+                {Array.isArray(columns) && columns.map((column, index) => (
                   <th
                     key={index}
                     className={`px-6 py-3 text-${
@@ -419,7 +419,7 @@ function DataTable<T extends Record<string, any>>({
               {loading ? (
                 <tr>
                   <td
-                    colSpan={columns.length + (selectable ? 1 : 0)}
+                    colSpan={(Array.isArray(columns) ? columns.length : 0) + (selectable ? 1 : 0)}
                     className="px-6 py-12 text-center text-gray-400"
                   >
                     <div className="flex items-center justify-center">
@@ -431,7 +431,7 @@ function DataTable<T extends Record<string, any>>({
               ) : paginatedData.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={columns.length + (selectable ? 1 : 0)}
+                    colSpan={(Array.isArray(columns) ? columns.length : 0) + (selectable ? 1 : 0)}
                     className="px-6 py-12 text-center text-gray-400"
                   >
                     <div className="flex flex-col items-center">
@@ -467,7 +467,7 @@ function DataTable<T extends Record<string, any>>({
                         />
                       </td>
                     )}
-                    {columns.map((column, colIndex) => (
+                    {Array.isArray(columns) && columns.map((column, colIndex) => (
                       <td
                         key={colIndex}
                         className={`px-6 py-4 text-${
@@ -509,7 +509,7 @@ function DataTable<T extends Record<string, any>>({
                       }}
                       className="px-2 py-1 border border-gray-600 rounded bg-gray-700 text-white text-sm"
                     >
-                      {pagination.pageSizeOptions.map((size) => (
+                      {Array.isArray(pagination.pageSizeOptions) && pagination.pageSizeOptions.map((size) => (
                         <option key={size} value={size}>
                           {size}
                         </option>

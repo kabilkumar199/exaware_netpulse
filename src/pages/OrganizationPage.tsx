@@ -30,7 +30,7 @@ const OrganizationPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
+      <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-5">
         <h2 className="text-2xl font-bold text-white mb-4">Organization Management</h2>
         <p className="text-gray-400">
           Manage regions, sites, locations, manufacturers, racks, and device roles.
@@ -40,7 +40,7 @@ const OrganizationPage: React.FC = () => {
       {/* Tabs */}
       <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700">
         <div className="border-b border-gray-700">
-          <nav className="flex space-x-8 px-6">
+          <nav className="flex space-x-8 px-5">
             {organizationTabs.map((tab) => (
               <button
                 key={tab.id}
@@ -58,7 +58,7 @@ const OrganizationPage: React.FC = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="p-6">
+        <div className="p-5">
           <Routes>
             <Route path="/" element={<Regions />} />
             <Route path="/regions" element={<Regions />} />

@@ -10,8 +10,8 @@ import { mockCredentials } from "../../data/mockData";
 import { useNavigate } from "react-router-dom";
 
 interface DiscoveryWizardProps {
-  onComplete: (scan: DiscoveryScan) => void;
-  onCancel: () => void;
+  onComplete?: (scan: DiscoveryScan) => void;
+  onCancel?: () => void;
 }
 
 const DiscoveryWizard: React.FC<DiscoveryWizardProps> = ({
@@ -193,7 +193,6 @@ const DiscoveryWizard: React.FC<DiscoveryWizardProps> = ({
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    onComplete(newScan);
     navigate('/topology');
     
   };
