@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  ChevronDown,
-  X,
-} from "lucide-react";
-import Logo from "./Logo";
+import { ChevronDown, X } from "lucide-react";
 import { NAVIGATION_ITEMS, ICON_MAP } from "../../router/routes";
+import Logo from "./Logo";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -30,8 +27,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
 
   const isParentActive = (item: any) => {
     if (item.children) {
-      return item.children.some((child: any) => 
-        isActive(child.path) || (child.children && child.children.some((grandchild: any) => isActive(grandchild.path)))
+      return item.children.some(
+        (child: any) =>
+          isActive(child.path) ||
+          (child.children &&
+            child.children.some((grandchild: any) => isActive(grandchild.path)))
       );
     }
     return isActive(item.path);
@@ -50,17 +50,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
   // Auto-expand items with active children on mount and route change
   useEffect(() => {
     const activeItems: string[] = [];
-    
+
     NAVIGATION_ITEMS.forEach((item) => {
       if (isParentActive(item)) {
         activeItems.push(item.id);
-        
+
         // Check for active grandchildren
         if ("children" in item && item.children) {
           item.children.forEach((child: any) => {
             if ("children" in child && child.children) {
-              const hasActiveGrandchild = child.children.some((grandchild: any) =>
-                isActive(grandchild.path)
+              const hasActiveGrandchild = child.children.some(
+                (grandchild: any) => isActive(grandchild.path)
               );
               if (hasActiveGrandchild || isActive(child.path)) {
                 activeItems.push(child.id);
@@ -70,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         }
       }
     });
-    
+
     setExpandedItems((prev) => {
       const newSet = new Set([...prev, ...activeItems]);
       return Array.from(newSet);
@@ -105,7 +105,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
               "children" in item && item.children && item.children.length > 0;
             const isExpanded = expandedItems.includes(item.id);
             const isParentActiveItem = isParentActive(item);
-
+            if ("displayInMenu" in item && item.displayInMenu === false) {
+              return null;
+            }
             return (
               <li key={item.id}>
                 <Link
@@ -152,7 +154,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
                             isActive(grandchild.path)
                           )
                         : false;
-
+                      if (
+                        "displayInMenu" in child &&
+                        child.displayInMenu === false
+                      ) {
+                        return null;
+                      }
                       return (
                         <li key={child.id}>
                           <Link

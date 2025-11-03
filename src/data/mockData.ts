@@ -596,6 +596,385 @@ export const mockDevices: Device[] = [
   },
 ];
 
+export const interfaceStatsData: any[] = [
+  {
+    Status: "down",
+    TX_BPS: "0",
+    TX_PPS: "0",
+    Instance: "x-eth0/0/0",
+    RX_PPS: "0",
+    RX_BPS: "0",
+  },
+  {
+    Status: "up",
+    TX_BPS: "0",
+    TX_PPS: "0",
+    Instance: "x-eth0/1/0",
+   RX_PPS: "0",
+    RX_BPS: "0",
+  },
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/1/1",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "admin-down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/1/2",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "up",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/1/3",
+
+    RX_PPS: "0",
+
+    RX_BPS: "40",
+  },
+
+  {
+    Status: "up",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/0",
+
+    RX_PPS: "0",
+
+    RX_BPS: "40",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/1",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/2",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/3",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/4",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/5",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/6",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "up",
+
+    TX_BPS: "1.30 k",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/7",
+
+    RX_PPS: "0",
+
+    RX_BPS: "3.52 k",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/8",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/9",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/10",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/11",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "up",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/12",
+
+    RX_PPS: "0",
+
+    RX_BPS: "1.00 k",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/13",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/14",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/15",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/16",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/17",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/18",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/2/19",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+
+    TX_BPS: "0",
+
+    TX_PPS: "0",
+
+    Instance: "x-eth0/3/0",
+
+    RX_PPS: "0",
+
+    RX_BPS: "0",
+  },
+
+  {
+    Status: "down",
+    TX_BPS: "0",
+    TX_PPS: "0",
+    Instance: "x-eth0/3/1",
+    RX_PPS: "0",
+    RX_BPS: "0",
+  },
+  {
+    Status: "up",
+   TX_BPS: "0",
+    TX_PPS: "0",
+    Instance: "x-eth0/4/0",
+    RX_PPS: "0",
+    RX_BPS: "0",
+  },
+  {
+    Status: "up",
+    TX_BPS: "0",
+    TX_PPS: "0",
+    Instance: "x-eth0/4/1",
+    RX_PPS: "0",
+    RX_BPS: "0",
+  },
+];
+
 // Mock Links
 export const mockLinks: Link[] = [
   {

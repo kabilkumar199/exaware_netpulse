@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import type { Device, PerformanceMetric } from '../../types';
+import { mockDevices } from '../../data/mockData';
 
-interface PerformanceDashboardProps {
-  device?: Device;
-  onClose?: () => void;
-}
+interface PerformanceDashboardProps {}
 
 interface PerformanceData {
   cpu: PerformanceMetric[];
@@ -14,7 +13,20 @@ interface PerformanceData {
   temperature: PerformanceMetric[];
 }
 
-const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onClose }) => {
+const PerformanceDashboard: React.FC<PerformanceDashboardProps> = () => {
+  const { deviceId: routeDeviceId } = useParams<{ deviceId?: string }>();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
+  // Use mock devices instead of API
+  const devices = mockDevices;
+  
+  // Get device ID from URL params or search params
+  const urlDeviceId = routeDeviceId || searchParams.get('deviceId');
+  
+  const [selectedDevice, setSelectedDevice] = useState<Device | undefined>(undefined);
+  const [showDeviceSelector, setShowDeviceSelector] = useState(false);
+  
   const [performanceData, setPerformanceData] = useState<PerformanceData>({
     cpu: [],
     memory: [],
@@ -25,8 +37,29 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
   const [selectedMetric, setSelectedMetric] = useState<keyof PerformanceData>('cpu');
   const [timeRange, setTimeRange] = useState<'1h' | '6h' | '24h' | '7d'>('1h');
 
+  // Load device from URL or show selector
+  useEffect(() => {
+    if (urlDeviceId && devices.length > 0) {
+      const foundDevice = devices.find((d) => d.id === urlDeviceId);
+      if (foundDevice) {
+        setSelectedDevice(foundDevice);
+        setShowDeviceSelector(false);
+      } else {
+        // Device ID in URL but not found
+        setSelectedDevice(undefined);
+        setShowDeviceSelector(true);
+      }
+    } else if (!urlDeviceId) {
+      // No device ID in URL - show selector
+      setSelectedDevice(undefined);
+      setShowDeviceSelector(true);
+    }
+  }, [urlDeviceId, devices]);
+
   // Mock performance data - in real implementation, this would come from API
   useEffect(() => {
+    if (!selectedDevice) return;
+
     const generateMockData = () => {
       const now = new Date();
       const data: PerformanceData = {
@@ -42,7 +75,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
         const timestamp = new Date(now.getTime() - i * 60000); // Every minute
         
         data.cpu.push({
-          deviceId: device?.id || 'device-1',
+          deviceId: selectedDevice.id,
           metricType: 'cpu',
           value: Math.random() * 100,
           unit: '%',
@@ -51,7 +84,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
         });
 
         data.memory.push({
-          deviceId: device?.id || 'device-1',
+          deviceId: selectedDevice.id,
           metricType: 'memory',
           value: Math.random() * 100,
           unit: '%',
@@ -60,7 +93,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
         });
 
         data.disk.push({
-          deviceId: device?.id || 'device-1',
+          deviceId: selectedDevice.id,
           metricType: 'disk',
           value: Math.random() * 100,
           unit: '%',
@@ -69,7 +102,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
         });
 
         data.network.push({
-          deviceId: device?.id || 'device-1',
+          deviceId: selectedDevice.id,
           metricType: 'network',
           value: Math.random() * 1000,
           unit: 'Mbps',
@@ -78,7 +111,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
         });
 
         data.temperature.push({
-          deviceId: device?.id || 'device-1',
+          deviceId: selectedDevice.id,
           metricType: 'temperature',
           value: 20 + Math.random() * 40,
           unit: '°C',
@@ -95,7 +128,17 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
     // Simulate real-time updates
     const interval = setInterval(generateMockData, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
-  }, [device?.id]);
+  }, [selectedDevice?.id]);
+
+  const handleDeviceSelect = (deviceId: string) => {
+    const device = devices.find((d) => d.id === deviceId);
+    if (device) {
+      setSelectedDevice(device);
+      setShowDeviceSelector(false);
+      // Update URL with device ID - use navigate to update route
+      navigate(`/monitoring/performance/${deviceId}`, { replace: true });
+    }
+  };
 
   const getMetricColor = (value: number, threshold?: { warning: number; critical: number }) => {
     if (!threshold) return 'text-gray-400';
@@ -123,58 +166,182 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
   const averageValue = getAverageValue(performanceData[selectedMetric]);
   const peakValue = getPeakValue(performanceData[selectedMetric]);
 
-  return (
-    <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="text-2xl font-bold text-white">
-            Performance Dashboard
-          </h2>
-          {device && (
-            <p className="text-gray-400">
-              {device.hostname} - {device.vendor} {device.model}
-            </p>
+  // Device Selector Modal
+  const DeviceSelectorModal = () => {
+    if (!showDeviceSelector) return null;
+
+    return (
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        onClick={() => {
+          // Close modal when clicking outside (only if device is selected)
+          if (selectedDevice) {
+            setShowDeviceSelector(false);
+          }
+        }}
+      >
+        <div 
+          className="bg-gray-800 rounded-lg shadow-xl border border-gray-700 p-6 max-w-md w-full mx-4"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h3 className="text-xl font-semibold text-white mb-4">
+            Select Device
+          </h3>
+          <p className="text-gray-400 mb-4 text-sm">
+            Please select a device to view performance metrics and charts.
+          </p>
+          {devices.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-400 mb-4">No devices available.</p>
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => {
+                    setShowDeviceSelector(false);
+                    navigate('/devices');
+                  }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Go to Devices
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="relative">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Select Device
+                </label>
+                <select
+                  value={selectedDevice?.id || ''}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      handleDeviceSelect(e.target.value);
+                    }
+                  }}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500 text-sm"
+                >
+                  <option value="">-- Select a device --</option>
+                  {devices.map((device) => {
+                    // Handle ipAddresses array (mock devices use ipAddresses array)
+                    const ipAddress = (device.ipAddresses && device.ipAddresses.length > 0)
+                      ? device.ipAddresses[0]
+                      : 'N/A';
+                    const displayName = device.hostname || device.id || 'Unknown Device';
+                    const vendor = device.vendor || '';
+                    const model = device.model || '';
+                    const deviceInfo = vendor || model ? ` - ${vendor} ${model}`.trim() : '';
+                    
+                    return (
+                      <option key={device.id} value={device.id}>
+                        {displayName} ({ipAddress}){deviceInfo}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => {
+                    setShowDeviceSelector(false);
+                  }}
+                  className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>
+    );
+  };
 
-      {/* Metric Selector */}
-      <div className="flex space-x-4 mb-6">
-        {(['cpu', 'memory', 'disk', 'network', 'temperature'] as const).map((metric) => (
-          <button
-            key={metric}
-            onClick={() => setSelectedMetric(metric)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              selectedMetric === metric
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
-            }`}
-          >
-            {metric.charAt(0).toUpperCase() + metric.slice(1)}
-          </button>
-        ))}
-      </div>
+  return (
+    <>
+      {/* Device Selector Modal */}
+      <DeviceSelectorModal />
 
-      {/* Time Range Selector */}
-      <div className="flex space-x-2 mb-6">
-        {(['1h', '6h', '24h', '7d'] as const).map((range) => (
-          <button
-            key={range}
-            onClick={() => setTimeRange(range)}
-            className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-              timeRange === range
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
-            }`}
-          >
-            {range}
-          </button>
-        ))}
-      </div>
+      <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-white">
+              Performance Dashboard
+            </h2>
+            {selectedDevice ? (
+              <p className="text-gray-400">
+                {selectedDevice.hostname} - {selectedDevice.vendor} {selectedDevice.model}
+              </p>
+            ) : (
+              <p className="text-gray-400">
+                No device selected
+              </p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            {selectedDevice && (
+              <button
+                onClick={() => {
+                  setShowDeviceSelector(true);
+                }}
+                className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+              >
+                Change Device
+              </button>
+            )}
+          </div>
+        </div>
 
-      {/* Current Metrics */}
-      {currentMetric && (
+        {!selectedDevice ? (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg mb-4">
+              Please select a device to view performance metrics and charts.
+            </p>
+            <button
+              onClick={() => setShowDeviceSelector(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Select Device
+            </button>
+          </div>
+        ) : (
+          <>
+            {/* Metric Selector */}
+            <div className="flex space-x-4 mb-6">
+              {(['cpu', 'memory', 'disk', 'network', 'temperature'] as const).map((metric) => (
+                <button
+                  key={metric}
+                  onClick={() => setSelectedMetric(metric)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedMetric === metric
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  }`}
+                >
+                  {metric.charAt(0).toUpperCase() + metric.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            {/* Time Range Selector */}
+            <div className="flex space-x-2 mb-6">
+              {(['1h', '6h', '24h', '7d'] as const).map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                    timeRange === range
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  }`}
+                >
+                  {range}
+                </button>
+              ))}
+            </div>
+
+            {/* Current Metrics */}
+            {currentMetric && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="bg-gray-700 rounded-lg p-4">
             <h3 className="text-sm font-medium text-gray-300 mb-2">
@@ -260,13 +427,14 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({ device, onC
                 {currentMetric.threshold.critical} {currentMetric.unit}
               </div>
             </div>
+            </div>
           </div>
-        </div>
-      )}
-
-    </div>
+        )}
+      </>
+        )}
+      </div>
+    </>
   );
 };
 
 export default PerformanceDashboard;
-
