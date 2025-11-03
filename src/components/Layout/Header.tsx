@@ -10,6 +10,7 @@ import {
   Settings2,
   FileCog,
   Save,
+  Info,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AddRegion from "../forms/AddRegion";
@@ -32,8 +33,12 @@ const Header: React.FC<HeaderProps> = ({
   const settingsRef = useRef<HTMLDivElement>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [configModal, setConfigModal] = useState(false);
+  const [pollingModal, setPollingModal] = useState(false);
   const [pollingInterval, setPollingInterval] = useState<number>(30);
+  const [activeTab, setActiveTab] = useState<"save" | "load">("save");
+  const [saveUrl, setSaveUrl] = useState("");
+  const [loadUrl, setLoadUrl] = useState("");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,10 +68,14 @@ const Header: React.FC<HeaderProps> = ({
 
   // ✅ Handle save
   const handleSave = () => {
-    console.log("Polling Interval saved:", pollingInterval);
-    setShowModal(false);
+    if (activeTab === "save") {
+      console.log("Saving configuration to:", saveUrl);
+    } else {
+      console.log("Loading override from:", loadUrl);
+    }
+    setConfigModal(false);
+    setPollingModal(false);
   };
-
   return (
     <header className="bg-gray-900 shadow-sm border-b border-gray-700">
       <div className="flex items-center justify-between h-16 px-4">
@@ -109,7 +118,6 @@ const Header: React.FC<HeaderProps> = ({
             {/* Settings */}
             <button
               className="p-2 text-gray-400 hover:text-white transition-colors hover:cursor-pointer"
-              // onClick={()=>setShowSettingsMenu(!showSettingsMenu)}
               onClick={() => setShowSettingsMenu((prev) => !prev)}
             >
               <span className="sr-only">Settings</span>
@@ -122,21 +130,27 @@ const Header: React.FC<HeaderProps> = ({
                   className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors hover:cursor-pointer"
                   onClick={() => {
                     setShowSettingsMenu(false);
-                    setShowModal(true);
+                    setPollingModal(true);
                   }}
                 >
                   <Settings2 className="w-4 h-4" />
                   <span>Polling Interval</span>
                 </button>
-                <button className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors hover:cursor-pointer">
+                <button
+                  className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors hover:cursor-pointer"
+                  onClick={() => {
+                    setShowSettingsMenu(false);
+                    setConfigModal(true);
+                  }}
+                >
                   <FileCog className="w-4 h-4" />
                   <span>Configure Management</span>
                 </button>
               </div>
             )}
 
-            {showModal && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+            {pollingModal && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
                 <div className="bg-gray-800 rounded-lg shadow-xl p-6 w-96 border border-gray-700">
                   <h2 className="text-lg font-semibold text-white mb-4">
                     Device Polling Information
@@ -155,7 +169,100 @@ const Header: React.FC<HeaderProps> = ({
 
                   <div className="flex justify-end space-x-2">
                     <button
-                      onClick={() => setShowModal(false)}
+                      onClick={() => setPollingModal(false)}
+                      className="px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSave}
+                      className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                    >
+                      <Save className="w-4 h-4" />
+                      <span>Save</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Modal with Tabs */}
+            {configModal && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50">
+                <div className="bg-gray-800 rounded-lg shadow-xl p-6 w-96 border border-gray-700">
+                  <h2 className="text-lg font-semibold text-white mb-4">
+                    Configure Management
+                  </h2>
+
+                  {/* Tabs */}
+                  <div className="flex mb-4 border-b border-gray-700">
+                    <button
+                      className={`flex-1 py-2 text-sm font-medium ${
+                        activeTab === "save"
+                          ? "text-white border-b-2 border-blue-500"
+                          : "text-gray-400 hover:text-white"
+                      }`}
+                      onClick={() => setActiveTab("save")}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className={`flex-1 py-2 text-sm font-medium ${
+                        activeTab === "load"
+                          ? "text-white border-b-2 border-blue-500"
+                          : "text-gray-400 hover:text-white"
+                      }`}
+                      onClick={() => setActiveTab("load")}
+                    >
+                      Load Override
+                    </button>
+                  </div>
+
+                  {/* Input section for active tab */}
+                  {activeTab === "save" ? (
+                    <>
+                      <label className="flex items-center text-gray-300 text-sm mb-2">
+                        Save Configuration URL
+                        <div className="ml-2 group relative">
+                          <Info className="w-4 h-4 text-gray-400 hover:text-blue-400 cursor-pointer" />
+                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-900 text-gray-200 text-xs p-2 rounded-md shadow-md w-80">
+                            Ex: protocol://username:password@ipaddress/filepath
+                          </div>
+                        </div>
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                        placeholder="e.g. ftp://user:pass@192.168.1.10/config.txt"
+                        value={saveUrl}
+                        onChange={(e) => setSaveUrl(e.target.value)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <label className="flex items-center text-gray-300 text-sm mb-2">
+                        Load Override URL
+                        <div className="ml-2 group relative">
+                          <Info className="w-4 h-4 text-gray-400 hover:text-blue-400 cursor-pointer" />
+                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-900 text-gray-200 text-xs p-2 rounded-md shadow-md w-80">
+                            Ex: protocol://username:password@ipaddress/filepath
+                          </div>
+                        </div>
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                        placeholder="e.g. ftp://user:pass@192.168.1.10/override.txt"
+                        value={loadUrl}
+                        onChange={(e) => setLoadUrl(e.target.value)}
+                      />
+                    </>
+                  )}
+
+                  {/* Buttons */}
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => setConfigModal(false)}
                       className="px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
                     >
                       Cancel
