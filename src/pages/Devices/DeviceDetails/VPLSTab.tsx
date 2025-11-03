@@ -1027,135 +1027,7 @@ const VPLSTab: React.FC<VPLSTabProps> = ({ device }) => {
     );
   };
 
-  return (
-    <div className="space-y-3">
-      {/* Section Tabs */}
-      <div className="border-b border-gray-700 overflow-x-auto">
-        <nav className="flex space-x-4 min-w-max">
-          <button
-            onClick={() => setActiveSection("instances")}
-            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-              activeSection === "instances"
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-            }`}
-          >
-            <Network className="w-3.5 h-3.5" />
-            <span>VPLS Instances</span>
-          </button>
-          <button
-            onClick={() => setActiveSection("ac")}
-            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-              activeSection === "ac"
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-            }`}
-          >
-            <Link className="w-3.5 h-3.5" />
-            <span>AC Interfaces</span>
-          </button>
-          <button
-            onClick={() => setActiveSection("pw")}
-            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-              activeSection === "pw"
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-            }`}
-          >
-            <Network className="w-3.5 h-3.5" />
-            <span>Pseudowires</span>
-          </button>
-          <button
-            onClick={() => setActiveSection("fib")}
-            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-              activeSection === "fib"
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-            }`}
-          >
-            <Database className="w-3.5 h-3.5" />
-            <span>FIB AC</span>
-          </button>
-          <button
-            onClick={() => setActiveSection("fibpw")}
-            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-              activeSection === "fibpw"
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-            }`}
-          >
-            <Database className="w-3.5 h-3.5" />
-            <span>FIB PWs</span>
-          </button>
-          <button
-            onClick={() => setActiveSection("dhcp")}
-            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-              activeSection === "dhcp"
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-            }`}
-          >
-            <Settings className="w-3.5 h-3.5" />
-            <span>DHCP</span>
-          </button>
-          <button
-            onClick={() => setActiveSection("mac")}
-            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-              activeSection === "mac"
-                ? "border-blue-500 text-blue-400"
-                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
-            }`}
-          >
-            <Database className="w-3.5 h-3.5" />
-            <span>MAC</span>
-          </button>
-        </nav>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-sm bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
-            />
-          </div>
-          <div className="relative">
-            <Filter className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 text-sm bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500 appearance-none"
-            >
-              <option value="all">All Status</option>
-              <option value="up">Up</option>
-              <option value="down">Down</option>
-              <option value="admin-down">Admin Down</option>
-              <option value="warning">Warning</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Section Content */}
-      <div className="pt-3">
-        {activeSection === "instances" && renderVPLSInstances()}
-        {activeSection === "ac" && renderACInterfaces()}
-        {activeSection === "pw" && renderPseudowires()}
-        {activeSection === "fib" && renderFIBAC()}
-        {activeSection === "fibpw" && renderFIBPW()}
-        {activeSection === "dhcp" && renderDHCP()}
-        {activeSection === "mac" && renderMAC()}
-      </div>
-    </div>
-  );
-
-  const renderFIBPW = () => {
+    const renderFIBPW = () => {
     const staticCount = mockFIBPWEntries.filter((fibpw) => fibpw.learnedType === "static").length;
     const dynamicCount = mockFIBPWEntries.filter((fibpw) => fibpw.learnedType === "dynamic").length;
     const upCount = mockFIBPWEntries.filter((fibpw) => fibpw.pwState === "up").length;
@@ -1725,6 +1597,135 @@ const VPLSTab: React.FC<VPLSTabProps> = ({ device }) => {
       </div>
     );
   };
+  return (
+    <div className="space-y-3">
+      {/* Section Tabs */}
+      <div className="border-b border-gray-700 overflow-x-auto">
+        <nav className="flex space-x-4 min-w-max">
+          <button
+            onClick={() => setActiveSection("instances")}
+            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+              activeSection === "instances"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+            }`}
+          >
+            <Network className="w-3.5 h-3.5" />
+            <span>VPLS Instances</span>
+          </button>
+          <button
+            onClick={() => setActiveSection("ac")}
+            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+              activeSection === "ac"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+            }`}
+          >
+            <Link className="w-3.5 h-3.5" />
+            <span>AC Interfaces</span>
+          </button>
+          <button
+            onClick={() => setActiveSection("pw")}
+            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+              activeSection === "pw"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+            }`}
+          >
+            <Network className="w-3.5 h-3.5" />
+            <span>Pseudowires</span>
+          </button>
+          <button
+            onClick={() => setActiveSection("fib")}
+            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+              activeSection === "fib"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+            }`}
+          >
+            <Database className="w-3.5 h-3.5" />
+            <span>FIB AC</span>
+          </button>
+          <button
+            onClick={() => setActiveSection("fibpw")}
+            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+              activeSection === "fibpw"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+            }`}
+          >
+            <Database className="w-3.5 h-3.5" />
+            <span>FIB PWs</span>
+          </button>
+          <button
+            onClick={() => setActiveSection("dhcp")}
+            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+              activeSection === "dhcp"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+            }`}
+          >
+            <Settings className="w-3.5 h-3.5" />
+            <span>DHCP</span>
+          </button>
+          <button
+            onClick={() => setActiveSection("mac")}
+            className={`flex items-center space-x-1.5 px-3 py-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+              activeSection === "mac"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+            }`}
+          >
+            <Database className="w-3.5 h-3.5" />
+            <span>MAC</span>
+          </button>
+        </nav>
+      </div>
+
+      {/* Filters */}
+      <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-8 pr-3 py-1.5 text-sm bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div className="relative">
+            <Filter className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full pl-8 pr-3 py-1.5 text-sm bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500 appearance-none"
+            >
+              <option value="all">All Status</option>
+              <option value="up">Up</option>
+              <option value="down">Down</option>
+              <option value="admin-down">Admin Down</option>
+              <option value="warning">Warning</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Section Content */}
+      <div className="pt-3">
+        {activeSection === "instances" && renderVPLSInstances()}
+        {activeSection === "ac" && renderACInterfaces()}
+        {activeSection === "pw" && renderPseudowires()}
+        {activeSection === "fib" && renderFIBAC()}
+        {activeSection === "fibpw" && renderFIBPW()}
+        {activeSection === "dhcp" && renderDHCP()}
+        {activeSection === "mac" && renderMAC()}
+      </div>
+    </div>
+  );
+
+
 };
 
 export default VPLSTab;
