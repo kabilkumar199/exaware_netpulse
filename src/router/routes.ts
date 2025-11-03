@@ -81,9 +81,7 @@ export const ICON_MAP: {
 
 export const ROUTES = {
   // Auth
-  AUTH: {
-    LOGIN: "/login",
-  },
+  LOGIN: "/login",
   // Main routes
   DASHBOARD: "/dashboard",
   DEVICES: "/devices",
@@ -130,6 +128,7 @@ export const ROUTES = {
     USERS: "/settings/users",
     ROLES: "/settings/roles",
     L2_SERVICES: "/settings/l2-services",
+    THEME: "/settings/theme",
     PROFILE: "/profile",
   },
 
@@ -191,7 +190,6 @@ export const NAVIGATION_ITEMS = [
         id: "device-roles",
         label: "Device Roles",
         icon: "user-check",
-
         path: ROUTES.ORGANIZATION.DEVICE_ROLES,
       },
     ],
@@ -238,7 +236,6 @@ export const NAVIGATION_ITEMS = [
       {
         id: "performance",
         icon: "trending-up",
-
         label: "Performance",
         path: ROUTES.MONITORING.PERFORMANCE,
       },
@@ -246,7 +243,6 @@ export const NAVIGATION_ITEMS = [
         id: "traffic",
         label: "Traffic Analysis",
         icon: "bar-chart",
-
         path: ROUTES.MONITORING.TRAFFIC,
       },
       {
@@ -258,13 +254,34 @@ export const NAVIGATION_ITEMS = [
       {
         id: "applications",
         icon: "layers",
-
         label: "Applications",
         path: ROUTES.MONITORING.APPLICATIONS,
       },
-      { id: "cloud", label: "Cloud Resources", path: ROUTES.MONITORING.CLOUD },
-      { id: "logs", label: "Log Management", path: ROUTES.MONITORING.LOGS },
-      // { id: "grafana", label: "Grafana", path: ROUTES.MONITORING.GRAFANA },
+      {
+        id: "cloud",
+        label: "Cloud Resources",
+        icon: "cloud",
+        path: ROUTES.MONITORING.CLOUD,
+      },
+      {
+        id: "logs",
+        label: "Log Management",
+        icon: "file-text",
+        path: ROUTES.MONITORING.LOGS,
+      },
+      {
+        id: "alerts",
+        label: "Alerts",
+        icon: "bell",
+        path: ROUTES.MANAGEMENT.ALERTS,
+      },
+
+      {
+        id: "grafana",
+        label: "Grafana",
+        displayInMenu: false,
+        path: ROUTES.MONITORING.GRAFANA,
+      },
     ],
   },
   {
@@ -276,11 +293,22 @@ export const NAVIGATION_ITEMS = [
       {
         id: "configuration",
         label: "Configuration",
+        icon: "settings",
+
         path: ROUTES.MANAGEMENT.CONFIGURATION,
       },
-      { id: "backups", label: "Backups", path: ROUTES.MANAGEMENT.BACKUPS },
-      { id: "firmware", label: "Firmware", path: ROUTES.MANAGEMENT.FIRMWARE },
-      { id: "alerts", label: "Alerts", path: ROUTES.MANAGEMENT.ALERTS },
+      {
+        id: "backups",
+        label: "Backups",
+        icon: "database",
+        path: ROUTES.MANAGEMENT.BACKUPS,
+      },
+      {
+        id: "firmware",
+        label: "Firmware",
+        icon: "harddrive",
+        path: ROUTES.MANAGEMENT.FIRMWARE,
+      },
     ],
   },
   {
@@ -309,11 +337,23 @@ export const NAVIGATION_ITEMS = [
           },
         ],
       },
-      { id: "profile", label: "Profile", path: ROUTES.SETTINGS.PROFILE },
+      {
+        id: "profile",
+        label: "Profile",
+        icon: "profile",
+        path: ROUTES.SETTINGS.PROFILE,
+      },
       {
         id: "credentials",
         label: "Credentials",
+        icon: "key",
         path: ROUTES.SETTINGS.CREDENTIALS,
+      },
+      {
+        id: "theme",
+        label: "Theme",
+        path: ROUTES.SETTINGS.THEME,
+        displayInMenu: false,
       },
     ],
   },

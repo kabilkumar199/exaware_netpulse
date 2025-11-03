@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ROUTES } from "./routes";
-import Layout from "../components/Layout/Layout";
+import Layout from "../components/layout/Layout";
 import Login from "../pages/Auth/Login";
 
 // Main Pages
@@ -11,7 +11,7 @@ import DiscoveryPage from "../pages/Discovery/DiscoveryPage";
 import TopologyPage from "../pages/TopologyPage";
 
 // Individual Components for Direct Access
-import DeviceDetails from "../components/modals/DeviceDetails";
+import DeviceDetails from "../pages/Devices/DeviceDetails";
 import DiscoveryWizard from "../components/modals/DiscoveryWizard";
 import NetBoxImporter from "../components/modals/NetBoxImporter";
 import TopologyScansView from "../pages/Network/TopologyScansView";
@@ -52,7 +52,7 @@ const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         {/* Public routes */}
-        <Route path={ROUTES.AUTH.LOGIN} element={<Login />} />
+        <Route path={ROUTES.LOGIN} element={<Login />} />
 
         {/* App routes */}
         <Route path="/" element={<Layout />}>
@@ -64,18 +64,9 @@ const AppRouter: React.FC = () => {
           <Route path="topology" element={<TopologyPage />} />
 
           {/* Direct Component Access Routes (for modals/overlays) */}
-          <Route
-            path="device/:id"
-            element={<DeviceDetails />}
-          />
-          <Route
-            path="discovery/wizard"
-            element={<DiscoveryWizard />}
-          />
-          <Route
-            path="discovery/netbox"
-            element={<NetBoxImporter />}
-          />
+          <Route path="device/:id" element={<DeviceDetails />} />
+          <Route path="discovery/wizard" element={<DiscoveryWizard />} />
+          <Route path="discovery/netbox" element={<NetBoxImporter />} />
           <Route
             path="topology/view"
             element={<TopologyScansView scans={[]} />}
@@ -84,7 +75,7 @@ const AppRouter: React.FC = () => {
           {/* Monitoring Direct Routes */}
           <Route
             path="monitoring/performance/:deviceId?"
-            element={<PerformanceDashboard device={undefined} />}
+            element={<PerformanceDashboard />}
           />
           <Route
             path="monitoring/traffic"
@@ -98,62 +89,26 @@ const AppRouter: React.FC = () => {
             path="monitoring/applications"
             element={<ApplicationPerformanceMonitor />}
           />
-          <Route
-            path="monitoring/cloud"
-            element={<CloudResourcesMonitor />}
-          />
-          <Route
-            path="monitoring/logs"
-            element={<LogManagement />}
-          />
-          <Route
-            path="monitoring/grafana"
-            element={<GrafanaView />}
-          />
+          <Route path="monitoring/cloud" element={<CloudResourcesMonitor />} />
+          <Route path="monitoring/logs" element={<LogManagement />} />
+          <Route path="monitoring/grafana" element={<GrafanaView />} />
 
           {/* Management Direct Routes */}
           <Route
             path="management/configuration/:deviceId?"
             element={<ConfigurationManager selectedDevice={undefined} />}
           />
-          <Route
-            path="management/backups"
-            element={<BackupManagement />}
-          />
-          <Route
-            path="management/firmware"
-            element={<FirmwareManagement />}
-          />
-          <Route
-            path="management/alerts"
-            element={<AlertManagement />}
-          />
-          <Route
-            path="settings/users"
-            element={<UserList />}
-          />
-          <Route
-            path="settings/roles"
-            element={<UserRole />}
-          />
-          <Route
-            path="/profile"
-            element={<UserProfile />}
-          />
+          <Route path="management/backups" element={<BackupManagement />} />
+          <Route path="management/firmware" element={<FirmwareManagement />} />
+          <Route path="management/alerts" element={<AlertManagement />} />
+          <Route path="settings/users" element={<UserList />} />
+          <Route path="settings/roles" element={<UserRole />} />
+          <Route path="/profile" element={<UserProfile />} />
 
           {/* Settings Direct Routes */}
-          <Route
-            path="settings/credentials"
-            element={<CredentialsManager />}
-          />
-          <Route
-            path="settings/grafana"
-            element={<GrafanaConfig />}
-          />
-          <Route
-            path="settings/l2-services"
-            element={<L2ServicesConfig />}
-          />
+          <Route path="settings/credentials" element={<CredentialsManager />} />
+          <Route path="settings/grafana" element={<GrafanaConfig />} />
+          <Route path="settings/l2-services" element={<L2ServicesConfig />} />
 
           {/* Organization Direct Routes */}
           <Route path="organization/regions" element={<Regions />} />
