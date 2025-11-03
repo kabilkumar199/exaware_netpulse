@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import type { DeviceConfiguration, Device, DevicePerformance, DevicePortLayout } from '../../types';
 import { mockDevices } from '../../data/mockData';
 import L2ServicesConfig from './L2ServicesConfig';
-// import { DeviceSelectorModal } from '../../components';
-import  DeviceSelectorModal from '../../components/modals/DeviceSelectorModal';
- 
+import DeviceSelectorModal from '../../components/modals/DeviceSelectorModal';
+  
 interface ConfigurationManagerProps {
   onClose?: () => void;
   selectedDevice?: Device;
