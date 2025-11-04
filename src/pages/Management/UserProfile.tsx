@@ -20,9 +20,18 @@ interface UserProfileProps {
   onClose?: () => void;
 }
 
+
+
 const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [visibility, setVisibility] = useState({
+    current: false,
+    new: false,
+    confirm: false,
+  });
+
 
   const [profile, setProfile] = useState({
     firstName: "John",
@@ -79,6 +88,23 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
     { id: "security", label: "Security", icon: Key },
     { id: "notifications", label: "Notifications", icon: Bell },
   ];
+
+  // --- ADD THIS FUNCTION ---
+  const handleChangePassword = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Add your password change API call or logic here
+    console.log("Form submitted. Add your API logic.");
+    // Close the modal after submission
+    setIsModalOpen(false);
+  };
+  // ADD THIS NEW FUNCTION:
+  const toggleVisibility = (field: "current" | "new" | "confirm") => {
+    setVisibility((prev) => ({
+      ...prev,
+      [field]: !prev[field], // Toggle the specific field's boolean
+    }));
+  };
+
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -142,11 +168,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-                        activeTab === tab.id
-                          ? "bg-blue-600 text-white"
-                          : "text-gray-400 hover:text-white hover:bg-gray-700"
-                      }`}
+                      className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${activeTab === tab.id
+                        ? "bg-blue-600 text-white"
+                        : "text-gray-400 hover:text-white hover:bg-gray-700"
+                        }`}
                     >
                       <IconComponent className="w-4 h-4" />
                       <span className="text-sm font-medium">{tab.label}</span>
@@ -410,6 +435,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                   </h2>
 
                   <div className="space-y-6">
+                    {/* --- Your 2FA Card --- */}
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
@@ -422,15 +448,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                         </div>
                         <div className="flex items-center space-x-3">
                           <span
-                            className={`px-2 py-1 text-xs rounded-full ${
-                              profile.security.twoFactor
-                                ? "bg-green-900 text-green-300"
-                                : "bg-red-900 text-red-300"
-                            }`}
+                            className={`px-2 py-1 text-xs rounded-full ${profile.security.twoFactor
+                              ? "bg-green-900 text-green-300"
+                              : "bg-red-900 text-red-300"
+                              }`}
                           >
-                            {profile.security.twoFactor
-                              ? "Enabled"
-                              : "Disabled"}
+                            {profile.security.twoFactor ? "Enabled" : "Disabled"}
                           </span>
                           <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
                             {profile.security.twoFactor ? "Disable" : "Enable"}
@@ -439,6 +462,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                       </div>
                     </div>
 
+                    {/* --- MODIFIED Change Password Card --- */}
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
@@ -449,12 +473,17 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                             Last changed: {profile.security.lastPasswordChange}
                           </p>
                         </div>
-                        <button className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors">
+                        {/* 4. This button now opens the modal */}
+                        <button
+                          onClick={() => setIsModalOpen(true)}
+                          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors"
+                        >
                           Change Password
                         </button>
                       </div>
                     </div>
 
+                    {/* --- Your Login Activity Card --- */}
                     <div className="bg-gray-700 rounded-lg p-4">
                       <div>
                         <h3 className="text-lg font-medium text-white mb-2">
@@ -469,6 +498,168 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
                         </button>
                       </div>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 5. THE NEW MODAL COMPONENT */}
+              {/* It renders conditionally based on the 'isModalOpen' state */}
+              {isModalOpen && (
+                <div
+                  className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50"
+                  // Close modal when clicking the overlay
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  {/* Modal Content Box */}
+                  <div
+                    className="bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 mx-4"
+                    // Prevent clicks inside the modal from closing it
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {/* Modal Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-xl font-semibold text-white">
+                        Change Password
+                      </h3>
+                      <button
+                        onClick={() => setIsModalOpen(false)}
+                        className="text-gray-400 hover:text-white transition-colors"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* Modal Body (Form) */}
+                    <form onSubmit={handleChangePassword}>
+                      <div className="space-y-4">
+                        {/* Current Password */}
+                        <div>
+                          <label
+                            htmlFor="current-password"
+                            className="block text-sm font-medium text-gray-300 mb-1"
+                          >
+                            Current Password
+                          </label>
+                          <div className="relative">
+                            <input
+                              /* CHANGE: Dynamic type */
+                              type={visibility.current ? "text" : "password"}
+                              id="current-password"
+                              required
+                              /* CHANGE: Added padding-right (pr-10) for the icon */
+                              className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            {/* CHANGE: Added show/hide button */}
+                            <button
+                              type="button"
+                              onClick={() => toggleVisibility("current")}
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
+                            >
+                              {visibility.current ? (
+                                <svg /* Eye-Off Icon */ xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}> <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-1.29-1.29m-2.637-2.637L4.5 5.25A9.95 9.95 0 0112 4.5c4.478 0 8.268 2.943 9.543 7a9.97 9.97 0 01-1.563 3.029m-5.858-.908l-4.242-4.242" /> </svg>
+                              ) : (
+                                <svg /* Eye Icon */ xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}> <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.057 9.542 6.042C19.732 16.057 15.523 19 12 19c-4.478 0-8.268-2.943-9.542-6.958z" /> </svg>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* New Password */}
+                        <div>
+                          <label
+                            htmlFor="new-password"
+                            className="block text-sm font-medium text-gray-300 mb-1"
+                          >
+                            New Password
+                          </label>
+                          <div className="relative">
+                            <input
+                              /* CHANGE: Dynamic type */
+                              type={visibility.new ? "text" : "password"}
+                              id="new-password"
+                              required
+                              /* CHANGE: Added padding-right (pr-10) for the icon */
+                              className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            {/* CHANGE: Added show/hide button */}
+                            <button
+                              type="button"
+                              onClick={() => toggleVisibility("new")}
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
+                            >
+                              {visibility.new ? (
+                                <svg /* Eye-Off Icon */ xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}> <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-1.29-1.29m-2.637-2.637L4.5 5.25A9.95 9.95 0 0112 4.5c4.478 0 8.268 2.943 9.543 7a9.97 9.97 0 01-1.563 3.029m-5.858-.908l-4.242-4.242" /> </svg>
+                              ) : (
+                                <svg /* Eye Icon */ xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}> <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.057 9.542 6.042C19.732 16.057 15.523 19 12 19c-4.478 0-8.268-2.943-9.542-6.958z" /> </svg>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Confirm New Password */}
+                        <div>
+                          <label
+                            htmlFor="confirm-password"
+                            className="block text-sm font-medium text-gray-300 mb-1"
+                          >
+                            Confirm New Password
+                          </label>
+                          {/* CHANGE: Added relative wrapper */}
+                          <div className="relative">
+                            <input
+                              /* CHANGE: Dynamic type */
+                              type={visibility.confirm ? "text" : "password"}
+                              id="confirm-password"
+                              required
+                              /* CHANGE: Added padding-right (pr-10) for the icon */
+                              className="w-full px-3 py-2 pr-10 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            {/* CHANGE: Added show/hide button */}
+                            <button
+                              type="button"
+                              onClick={() => toggleVisibility("confirm")}
+                              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
+                            >
+                              {visibility.confirm ? (
+                                <svg /* Eye-Off Icon */ xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}> <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-1.29-1.29m-2.637-2.637L4.5 5.25A9.95 9.95 0 0112 4.5c4.478 0 8.268 2.943 9.543 7a9.97 9.97 0 01-1.563 3.029m-5.858-.908l-4.242-4.242" /> </svg>
+                              ) : (
+                                <svg /* Eye Icon */ xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}> <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.057 9.542 6.042C19.732 16.057 15.523 19 12 19c-4.478 0-8.268-2.943-9.542-6.958z" /> </svg>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Modal Footer (Buttons) */}
+                      <div className="flex justify-end space-x-4 mt-6">
+                        <button
+                          type="button"
+                          onClick={() => setIsModalOpen(false)}
+                          className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg text-sm font-medium transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                        >
+                          Update Password
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               )}
