@@ -315,7 +315,8 @@ const Header: React.FC<HeaderProps> = ({
                   <span>Settings</span>
                 </button>
                 <hr className="my-1 border-gray-700" />
-                <button className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 transition-colors hover:cursor-pointer">
+                <button className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 transition-colors hover:cursor-pointer"
+                onClick={()=>navigate("/login")}>
                   <LogOut className="w-4 h-4" />
                   <span>Sign out</span>
                 </button>
