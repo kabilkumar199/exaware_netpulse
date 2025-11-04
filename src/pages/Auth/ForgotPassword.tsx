@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react"; // 👈 using lucide-react for icons
 import Logo from "../../components/Layout/Logo";
 import axiosInstance from "../../services/api";
 
-const ResetPassword: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,32 +67,17 @@ const ResetPassword: React.FC = () => {
     <div className="min-h-screen bg-gray-950">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         {/* Brand / Promo Panel */}
-         <div className="hidden lg:flex flex-col justify-between p-10 bg-gradient-to-br from-blue-900 via-indigo-900 to-gray-900 border-r border-gray-800">
+        <div className="hidden lg:flex flex-col justify-between p-10 bg-gradient-to-br from-blue-900 via-indigo-900 to-gray-900 border-r border-gray-800">
           <div>
-            <Logo className="" width={200} height={28} />
+            <Logo width={200} height={28} />
           </div>
           <div className="space-y-6">
             <h2 className="text-3xl font-semibold text-white leading-tight">
               Unified Network Intelligence
             </h2>
             <p className="text-gray-300">
-              Discover, monitor, and manage your entire network with real-time
-              insights, powerful automation, and beautiful visualizations.
+              Manage and secure your network with confidence.
             </p>
-            <ul className="space-y-3 text-gray-300">
-              <li className="flex items-center gap-3">
-                <span className="text-blue-400">✓</span>
-                Topology discovery and mapping
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="text-blue-400">✓</span>
-                Device inventory and configuration
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="text-blue-400">✓</span>
-                Performance and log analytics
-              </li>
-            </ul>
           </div>
           <div className="text-sm text-gray-400">
             © {new Date().getFullYear()} Exaware Routing Ltd. — NMS 2.1.6
@@ -113,6 +101,7 @@ const ResetPassword: React.FC = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Username/Email */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Username or Email
@@ -126,30 +115,58 @@ const ResetPassword: React.FC = () => {
                   />
                 </div>
 
+                {/* New Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     New Password
                   </label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Enter new password"
-                    className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Enter new password"
+                      className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                    >
+                      {showNewPassword ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
+                {/* Repeat Password */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">
                     Repeat New Password
                   </label>
-                  <input
-                    type="password"
-                    value={repeatPassword}
-                    onChange={(e) => setRepeatPassword(e.target.value)}
-                    placeholder="Repeat new password"
-                    className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showRepeatPassword ? "text" : "password"}
+                      value={repeatPassword}
+                      onChange={(e) => setRepeatPassword(e.target.value)}
+                      placeholder="Repeat new password"
+                      className="w-full px-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                    >
+                      {showRepeatPassword ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 {error && (
@@ -183,4 +200,4 @@ const ResetPassword: React.FC = () => {
   );
 };
 
-export default ResetPassword;
+export default ForgotPassword;

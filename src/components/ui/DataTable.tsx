@@ -5,7 +5,7 @@ import {
   Search,
   Filter,
   Download,
-  RefreshCw,
+  RefreshCw
 } from "lucide-react";
 
 // Types for the DataTable component
@@ -61,6 +61,7 @@ export interface DataTableProps<T> {
   onFilter?: (filters: Record<string, any>) => void;
   onSearch?: (searchTerm: string) => void;
   onRefresh?: () => void;
+  onImport?:React.ReactNode;
   onExport?: () => void;
   className?: string;
   headerActions?: React.ReactNode;
@@ -94,6 +95,7 @@ function DataTable<T extends Record<string, any>>({
   onFilter,
   onSearch,
   onRefresh,
+  onImport,
   onExport,
   className = "",
   headerActions,
@@ -232,19 +234,14 @@ function DataTable<T extends Record<string, any>>({
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Actions Row */}
-      {(headerActions || onRefresh || onExport) && (
+      {(headerActions || onRefresh || onImport || onExport) && (
         <div className="  rounded-lg shadow-sm   border-gray-700 p-4">
           <div className="flex items-center justify-end gap-2">
             {headerActions}
-            {onRefresh && (
-              <button
-                onClick={onRefresh}
-                className="px-3 py-2 text-sm border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 flex items-center gap-2"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Refresh
-              </button>
+              {onImport && (
+              <>{onImport}</>
             )}
+            
             {onExport && (
               <button
                 onClick={onExport}
@@ -252,6 +249,14 @@ function DataTable<T extends Record<string, any>>({
               >
                 <Download className="h-4 w-4" />
                 Export
+              </button>
+            )}
+            {onRefresh && (
+              <button
+                onClick={onRefresh}
+                className="px-3 py-2 text-sm border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 flex items-center gap-2"
+              >
+                <RefreshCw className="h-4 w-4" />
               </button>
             )}
           </div>
