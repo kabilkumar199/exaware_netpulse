@@ -46,6 +46,7 @@ import Locations from "../pages/Organization/Locations";
 import ManufacturersPage from "../pages/Organization/Manufacturers";
 import RacksPage from "../pages/Organization/RacksPage";
 import DeviceRolesPage from "../pages/Organization/DeviceRolesPage";
+import ForgotPassword from "../pages/Auth/ForgotPassword";
 
 const AppRouter: React.FC = () => {
   return (
@@ -53,6 +54,7 @@ const AppRouter: React.FC = () => {
       <Routes>
         {/* Public routes */}
         <Route path={ROUTES.LOGIN} element={<Login />} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
 
         {/* App routes */}
         <Route path="/" element={<Layout />}>

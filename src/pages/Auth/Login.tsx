@@ -157,6 +157,7 @@ const Login: React.FC = () => {
                   <button
                     type="button"
                     className="text-sm text-blue-400 hover:text-blue-300"
+                    onClick={()=>navigate("/forgot-password")}
                   >
                     Forgot password?
                   </button>
@@ -166,6 +167,7 @@ const Login: React.FC = () => {
                   type="submit"
                   className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                   disabled={!username || !password}
+                  onClick={()=>navigate('/dashboard')}
                 >
                   Sign in
                 </button>

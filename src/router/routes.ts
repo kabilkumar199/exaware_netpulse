@@ -82,6 +82,7 @@ export const ICON_MAP: {
 export const ROUTES = {
   // Auth
   LOGIN: "/login",
+  FORGOT_PASSWORD: "/forgot-password",
   // Main routes
   DASHBOARD: "/dashboard",
   DEVICES: "/devices",
