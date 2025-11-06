@@ -17,12 +17,14 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
 }
-
+// const storedToken = localStorage.getItem("authToken");
+// const storedRefresh = localStorage.getItem("refreshToken");
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem('authToken'),
-  refreshToken: localStorage.getItem('refreshToken'),
-  isAuthenticated: !!localStorage.getItem('authToken'),
+  token: null,
+  refreshToken: null,
+  // isAuthenticated: storedToken ? true : false,
+  isAuthenticated: false,  
   isLoading: false,
   error: null,
 };
