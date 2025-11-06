@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import useLocalStorage from "../hooks/auth/useLocalStorage";
 
 const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [themeMode] = useLocalStorage<"light" | "dark">("theme-mode", "dark");

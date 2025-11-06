@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Plus, Eye, Settings, Edit, Upload } from "lucide-react";
+import { Plus, Eye, Settings, Edit } from "lucide-react";
 import type { Device } from "../../types";
 import { mockDevices } from "../../data/mockData";
 import AddDeviceModal from "../modals/AddDeviceModal";
@@ -11,8 +11,7 @@ import {
   DeviceIcon,
   ActionButtons,
   formatLastSeen,
-} from "../ui";
-import AddImportModal from "../modals/AddImportModal";
+} from "../common/ui";
 
 interface DeviceListProps {
   onDeviceSelect: (device: Device) => void;
@@ -25,7 +24,6 @@ const DeviceList: React.FC<DeviceListProps> = ({
 }) => {
   const [devices] = useState<Device[]>(mockDevices);
   const [showAddDeviceModal, setShowAddDeviceModal] = useState(false);
-  const [showImportDeviceModal, setShowImportDeviceModal] = useState(false);
   const [selectedDevices, setSelectedDevices] = useState<Device[]>([]);
 
   // Define table columns
@@ -208,16 +206,6 @@ const DeviceList: React.FC<DeviceListProps> = ({
     </button>
   );
 
-  const importModal = (
-    <button
-      onClick={() => setShowImportDeviceModal(true)}
-      className="px-3 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
-    >
-      <Upload className="h-4 w-4 mr-2" />
-      Import
-    </button>
-  );
-
   return (
     <div className="space-y-6">
       <DataTable
@@ -239,7 +227,6 @@ const DeviceList: React.FC<DeviceListProps> = ({
           // Implement refresh logic
           console.log("Refreshing devices...");
         }}
-        onImport={importModal}
         onExport={() => {
           // Implement export logic
           console.log("Exporting all devices...");
@@ -251,7 +238,7 @@ const DeviceList: React.FC<DeviceListProps> = ({
         bulkActions={bulkActions}
         emptyMessage="No devices found"
         emptyIcon={<span className="text-4xl text-gray-600">🔍</span>}
-        rowClassName={(device, index) =>
+        rowClassName={(device: Device, index: any) =>
           selectedDevices.includes(device) ? "bg-blue-900/20" : ""
         }
       />
@@ -260,12 +247,6 @@ const DeviceList: React.FC<DeviceListProps> = ({
       <AddDeviceModal
         isOpen={showAddDeviceModal}
         onClose={() => setShowAddDeviceModal(false)}
-      />
-
-      {/* Add Device Modal */}
-      <AddImportModal
-        isOpen={showImportDeviceModal}
-        onClose={() => setShowImportDeviceModal(false)}
       />
     </div>
   );

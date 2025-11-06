@@ -13,7 +13,10 @@ import {
   Info,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AddRegion from "../forms/AddRegion";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../../store/store";
+import { logout } from "../../../store/slices/authSlice";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -40,6 +43,23 @@ const Header: React.FC<HeaderProps> = ({
   const [saveUrl, setSaveUrl] = useState("");
   const [loadUrl, setLoadUrl] = useState("");
 
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("Logged out successfully");
+    setTimeout(() => {
+    }, 300);
+    setShowUserMenu(false);
+    navigate("/login");
+  };
+
+  // (Helper function for user initials)
+  const getInitials = (name: string | undefined) => {
+    if (!name) return "U";
+    return name.split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase();
+  };
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -61,9 +81,9 @@ const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const handleProfileClick = () => {
-    onProfileClick?.(); // optional custom handler
+    onProfileClick?.();
     setShowUserMenu(false);
-    navigate("/profile"); // navigate to the profile page
+    navigate("/profile");
   };
 
   // ✅ Handle save
@@ -197,21 +217,19 @@ const Header: React.FC<HeaderProps> = ({
                   {/* Tabs */}
                   <div className="flex mb-4 border-b border-gray-700">
                     <button
-                      className={`flex-1 py-2 text-sm font-medium ${
-                        activeTab === "save"
-                          ? "text-white border-b-2 border-blue-500"
-                          : "text-gray-400 hover:text-white"
-                      }`}
+                      className={`flex-1 py-2 text-sm font-medium ${activeTab === "save"
+                        ? "text-white border-b-2 border-blue-500"
+                        : "text-gray-400 hover:text-white"
+                        }`}
                       onClick={() => setActiveTab("save")}
                     >
                       Save
                     </button>
                     <button
-                      className={`flex-1 py-2 text-sm font-medium ${
-                        activeTab === "load"
-                          ? "text-white border-b-2 border-blue-500"
-                          : "text-gray-400 hover:text-white"
-                      }`}
+                      className={`flex-1 py-2 text-sm font-medium ${activeTab === "load"
+                        ? "text-white border-b-2 border-blue-500"
+                        : "text-gray-400 hover:text-white"
+                        }`}
                       onClick={() => setActiveTab("load")}
                     >
                       Load Override
@@ -316,7 +334,9 @@ const Header: React.FC<HeaderProps> = ({
                 </button>
                 <hr className="my-1 border-gray-700" />
                 <button className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 transition-colors hover:cursor-pointer"
-                onClick={()=>navigate("/login")}>
+                  onClick={handleLogout}
+                // window.location.href = "/login";
+                >
                   <LogOut className="w-4 h-4" />
                   <span>Sign out</span>
                 </button>
@@ -325,7 +345,7 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
       </div>
-    </header>
+    </header >
   );
 };
 
