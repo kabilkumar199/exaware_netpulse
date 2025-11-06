@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react"; // 👈 using lucide-react for icons
-import Logo from "../../components/Layout/Logo";
-import axiosInstance from "../../services/api";
+
+
+import Logo from "../../common/Layout/Logo";
 
 const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Palette, Check, Moon, Sun, Droplet } from "lucide-react";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import useLocalStorage from "../../hooks/auth/useLocalStorage";
 
 interface ThemeColor {
   name: string;

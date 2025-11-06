@@ -1,4 +1,4 @@
-import { apiSlice } from '../apiSlice';
+import { apiSlice } from  '../../store/apiSlice';
 import type { Device, Site, DiscoveryScan } from '../../types';
 
 // Devices API endpoints

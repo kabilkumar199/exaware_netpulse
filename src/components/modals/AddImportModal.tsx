@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { X, AlertCircle, CheckCircle } from "lucide-react";
 import { useAppDispatch } from "../../store/hooks";
 import { addDevice } from "../../store/slices/devicesSlice";
-import { useCreateDeviceMutation } from "../../store/api/devicesApi";
+import { useCreateDeviceMutation } from "../../helpers/api/devicesApiHelper";
+
 
 interface AddImportModalProps {
   isOpen: boolean;

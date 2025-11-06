@@ -15,7 +15,7 @@ import {
   Save,
   X,
 } from "lucide-react";
-
+import { toast } from "react-toastify";
 interface UserProfileProps {
   onClose?: () => void;
 }
@@ -93,7 +93,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
   const handleChangePassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Add your password change API call or logic here
-    console.log("Form submitted. Add your API logic.");
+     toast.success("Password changed successfully!");
     // Close the modal after submission
     setIsModalOpen(false);
   };

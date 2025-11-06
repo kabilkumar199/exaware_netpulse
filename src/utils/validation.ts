@@ -1,7 +1,37 @@
+import * as Yup from 'yup';
+
 // Email validation
 export const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
+};
+
+
+const requiredMessage = 'This field is required';
+const invalidEmail = 'Please enter a valid email address';
+export const validationSchemas = {
+ 
+  loginSchema: Yup.object({
+    username: Yup.string()
+      .email(invalidEmail)
+      .required(requiredMessage),
+    password: Yup.string()
+      .required(requiredMessage)
+      // .min(8, "Password must be at least 8 characters")
+      .matches(/^\S+$/, "Password cannot contain spaces"),
+  }),
+  createUserSchema: Yup.object({
+    username: Yup.string()
+      .email(invalidEmail)
+      .required(requiredMessage),
+    password: Yup.string()
+      .required(requiredMessage)
+      .min(8, 'Password must be at least 8 characters'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password')], 'Passwords must match')
+      .required(requiredMessage),
+  }),
+
 };
 
 // IP address validation

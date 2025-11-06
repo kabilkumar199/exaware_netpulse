@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, X } from "lucide-react";
-import { NAVIGATION_ITEMS, ICON_MAP } from "../../router/routes";
+import { NAVIGATION_ITEMS, ICON_MAP } from "../../../router/routes";
 import Logo from "./Logo";
 
 interface SidebarProps {

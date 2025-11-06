@@ -12,11 +12,12 @@ declare module 'axios' {
 
 // Create axios instance
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: false,
 });
 
 // Request interceptor
@@ -24,20 +25,21 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Get token from localStorage or wherever you store it
     const token = localStorage.getItem('authToken');
-    
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
     // Add request timestamp
     config.metadata = { startTime: new Date() };
-    
+
     return config;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
+console.log(import.meta.env.VITE_API_BASE_URL)
+
 
 // Response interceptor
 axiosInstance.interceptors.response.use(
@@ -61,11 +63,12 @@ axiosInstance.interceptors.response.use(
 
       // Try to refresh token
       const refreshToken = localStorage.getItem('refreshToken');
-      
+
       if (refreshToken) {
         try {
+          // This is more consistent
           const response = await axios.post(
-            `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/auth/refresh`,
+            `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
             { refreshToken }
           );
 
@@ -79,20 +82,14 @@ axiosInstance.interceptors.response.use(
           // Refresh failed, logout user
           localStorage.removeItem('authToken');
           localStorage.removeItem('refreshToken');
-          window.location.href = '/login';
+          //window.location.href = '/login';
           return Promise.reject(refreshError);
         }
       } else {
-        // No refresh token, redirect to login
         localStorage.removeItem('authToken');
-        window.location.href = '/login';
       }
     }
-
-    // Handle other errors
     const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
-    
-    // You can add toast notifications here
     console.error('API Error:', {
       message: errorMessage,
       status: error.response?.status,

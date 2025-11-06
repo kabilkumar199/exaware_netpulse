@@ -4,7 +4,7 @@ import { mockLogEntries } from "../../data/mockData";
 import DataTable, {
   type TableColumn,
   type FilterConfig,
-} from "../../components/ui/DataTable";
+} from "../../components/common/ui/DataTable";
 import { Eye, FileText, Calendar, Server, AlertCircle } from "lucide-react";
 
 interface LogManagementProps {

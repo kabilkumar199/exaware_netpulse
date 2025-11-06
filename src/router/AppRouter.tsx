@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ROUTES } from "./routes";
-import Layout from "../components/Layout/Layout";
-import Login from "../pages/Auth/Login";
+import Layout from "../components/common/Layout/Layout";
+import Login from "../components/features/Auth/Login";
 
 // Main Pages
 import Dashboard from "../pages/Dashboard/Dashboard";
@@ -46,7 +46,7 @@ import Locations from "../pages/Organization/Locations";
 import ManufacturersPage from "../pages/Organization/Manufacturers";
 import RacksPage from "../pages/Organization/RacksPage";
 import DeviceRolesPage from "../pages/Organization/DeviceRolesPage";
-import ForgotPassword from "../pages/Auth/ForgotPassword";
+import ForgotPassword from "../components/features/Auth/ForgotPassword";
 
 const AppRouter: React.FC = () => {
   return (
@@ -59,7 +59,7 @@ const AppRouter: React.FC = () => {
         {/* App routes */}
         <Route path="/" element={<Layout />}>
           {/* Main Routes */}
-          <Route index element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+          <Route index element={<Navigate to={ROUTES.LOGIN} replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="devices" element={<DevicesPage />} />
           <Route path="discovery" element={<DiscoveryPage />} />
